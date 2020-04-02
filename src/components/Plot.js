@@ -1,9 +1,12 @@
+'use strict';
+
 import {Component} from "react";
 import React from "react";
 import Constants from "./Constants";
 import WidgetButton from "./WidgetButton"
 import NodeLegend from "./NodeLegend"
 
+import PlotLib from 'react-plotly.js';
 
 type Props = {
   hospitalCapacity: number,
@@ -31,7 +34,15 @@ export default class Plot extends Component<Props, State> {
   maxDay: number;
   maxValue: number;
 
+  valuesTable: number[][];
+
   canvasRef: any;
+
+  foo : number;
+
+  // infectedPath : number[];
+  // recoveredPath : number[];
+  // deadPath : number[];
 
   constructor(props: Props) {
     super(props);
@@ -48,7 +59,11 @@ export default class Plot extends Component<Props, State> {
     }
 
     this.componentWillReceiveProps(props);
+
     this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
+    this.foo = 1;
+
+    // this.valuesTable.push([0,0,0,0]);
   }
 
   updateWindowDimensions() {
@@ -123,6 +138,7 @@ export default class Plot extends Component<Props, State> {
     this.updateMaxValues(this.props);
 
     let context = this.canvas.getContext('2d');
+    context.font = "50px serif";
 
     context.fillStyle = Constants.SUSCEPTIBLE_COLOR;
     context.fillRect(0, 0, this.width, this.height);
@@ -208,11 +224,14 @@ export default class Plot extends Component<Props, State> {
     // }
 
     let zerosPath = [];
+
+    let topPath = [];
+    let capacityPath = [];
+
     let infectedPath = [];
     let recoveredPath = [];
     let deadPath = [];
-    let topPath = [];
-    let capacityPath = [];
+
 
     for (let i = 0; i < this.props.infectedPerDay.length; i++) {
       let day = i;
@@ -220,14 +239,16 @@ export default class Plot extends Component<Props, State> {
       let recovered = this.props.recoveredPerDay[day];
       let dead = this.props.deadPerDay[day];
       let susceptible = this.props.population - infected - recovered - dead;
+
       let capacity = this.props.capacityPerDay[day];
       if (infected === null) {
-        // this.drawPath(zerosPath, infectedPath, context, Constants.INFECTED_COLOR);
-        // this.drawPath(recoveredPath, deadPath, context, REMOVED_COLOR);
-        // this.drawPath(deadPath, topPath, context, Constants.DEAD_COLOR);
+        this.drawPath(zerosPath, infectedPath, context, Constants.INFECTED_COLOR);
+        this.drawPath(recoveredPath, deadPath, context, REMOVED_COLOR);
+        this.drawPath(deadPath, topPath, context, Constants.DEAD_COLOR);
         this.drawPath(zerosPath, infectedPath, context, Constants.INFECTED_COLOR);
         this.drawPath(infectedPath, recoveredPath, context, REMOVED_COLOR);
         this.drawPath(recoveredPath, deadPath, context, Constants.DEAD_COLOR);
+
         if (this.showHospitalCapacity()) {
           this.drawPath(capacityPath, capacityPath, context, '#000');
         }
@@ -250,6 +271,9 @@ export default class Plot extends Component<Props, State> {
     this.drawPath(infectedPath, recoveredPath, context, REMOVED_COLOR);
     this.drawPath(recoveredPath, deadPath, context, Constants.DEAD_COLOR);
 
+    // this.drawSeries( zerosPath[day], context );
+
+
     if (this.showHospitalCapacity()) {
       this.drawPath(capacityPath, capacityPath, context, '#000');
     }
@@ -265,13 +289,6 @@ export default class Plot extends Component<Props, State> {
         this.drawLine(context, day-1, 0, day-1, this.maxValue);
       }
     }
-
-    // if (this.showHospitalCapacity()) {
-    //   context.strokeStyle = '#000';
-    //   context.setLineDash([5, 5]);
-    //   context.lineWidth = 1;
-    //   this.drawLine(context, 0, this.props.hospitalCapacity, this.maxDay, this.props.hospitalCapacity);
-    // }
 
     context.strokeStyle = '#000';
     context.setLineDash([]);
@@ -306,6 +323,8 @@ export default class Plot extends Component<Props, State> {
       context.fill();
     }
   }
+
+
 
   drawSeries(series: number[], context) {
     for (let i = 1; i < series.length; i++) {
@@ -371,15 +390,15 @@ export default class Plot extends Component<Props, State> {
     }
 
     // let infectedCB = <label><input type="checkbox" checked={this.state.showInfected} onChange={(e) => this.setState({showInfected: e.target.checked})}/> Infected: {infectedPercent}%</label>
-    let infectedCB = <span><NodeLegend type="infected"/> &nbsp;Infected: {infectedPercent}%</span>
+    let infectedCB = <span><NodeLegend type="infected"/> &nbsp;Инфицированные: {infectedPercent}%</span>
 
     // let recoveredCB = <label><input type="checkbox" checked={this.state.showRecovered} onChange={(e) => this.setState({showRecovered: e.target.checked})}/> Recovered: {recoveredPercent}%</label>
-    let recoveredCB = <span><NodeLegend type="removed"/> &nbsp;Recovered: {recoveredPercent}%</span>
+    let recoveredCB = <span><NodeLegend type="removed"/> &nbsp;Выздоровившие: {recoveredPercent}%</span>
 
     let deadCB = null;
     if (this.props.showDeaths) {
       // deadCB = <label><input type="checkbox" checked={this.state.showDead} onChange={(e) => this.setState({showDead: e.target.checked})}/> Dead: {deadPercent}%</label>
-      deadCB = <span><NodeLegend type="dead"/> <span style={{backgroundColor: '#FFA'}}>&nbsp;Dead: {deadPercent}%&nbsp;</span></span>
+      deadCB = <span><NodeLegend type="dead"/> <span style={{backgroundColor: '#FFA'}}>&nbsp;Погибшие: {deadPercent}%&nbsp;</span></span>
     }
 
     let widthToUse = this.width;
@@ -387,11 +406,41 @@ export default class Plot extends Component<Props, State> {
       widthToUse = 300;
     }
 
+    let infectedPath = this.infectedPath;
+    let recoveredPath = this.recoveredPath;
+    let deadPath = this.deadPath;
+
+
+    let state = { data: [
+        {
+          x: Array.apply(null, {length: this.props.infectedPerDay.length}).map(Number.call, Number),
+          y: this.props.infectedPerDay,
+          type: 'scatter',
+          mode: 'lines+markers',
+          marker: {color: 'red'},
+        },
+        {
+          x: Array.apply(null, {length: this.props.recoveredPerDay.length}).map(Number.call, Number),
+          y: this.props.recoveredPerDay,
+          type: 'scatter',
+          mode: 'lines+markers',
+          marker: {color: 'gray'},
+        },
+        {
+          x: Array.apply(null, {length: this.props.deadPerDay.length}).map(Number.call, Number),
+          y: this.props.deadPerDay,
+          type: 'scatter',
+          mode: 'lines+markers',
+          marker: {color: 'black'},
+        },
+      ], layout: {width: 920, height: 480, title: 'График'},
+    };
+
     return (
       <div>
         <div className="plot-container">
           {/*<div className="plot-yaxis">population</div>*/}
-          <div className="plot-xaxis">time ⟶</div>
+          <div className="plot-xaxis">Время, дни ⟶</div>
           <div className="plot-chart">
             <canvas ref={this.canvasRef} width={widthToUse} height={this.height} />
           </div>
@@ -405,6 +454,19 @@ export default class Plot extends Component<Props, State> {
               <div>{deadCB}</div>
             </div>
           </div>
+        </div>
+
+
+
+          <PlotLib
+              data={state.data}
+              layout={state.layout}
+          />
+
+        <div style={{display: 'flex', flexDirection: 'column'}}>
+          <div>{infectedCB}</div>
+          <div>{recoveredCB}</div>
+          <div>{deadCB}</div>
         </div>
       </div>
     )
