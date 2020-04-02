@@ -393,7 +393,7 @@ export default class Plot extends Component<Props, State> {
     let infectedCB = <span><NodeLegend type="infected"/> &nbsp;Инфицированные: {infectedPercent}%</span>
 
     // let recoveredCB = <label><input type="checkbox" checked={this.state.showRecovered} onChange={(e) => this.setState({showRecovered: e.target.checked})}/> Recovered: {recoveredPercent}%</label>
-    let recoveredCB = <span><NodeLegend type="removed"/> &nbsp;Выздоровившие: {recoveredPercent}%</span>
+    let recoveredCB = <span><NodeLegend type="removed"/> &nbsp;Выздоровевшие: {recoveredPercent}%</span>
 
     let deadCB = null;
     if (this.props.showDeaths) {
@@ -427,7 +427,7 @@ export default class Plot extends Component<Props, State> {
           x: Array.apply(null, {length: this.props.recoveredPerDay.length}).map(Number.call, Number),
           y: this.props.recoveredPerDay,
           type: 'scatter',
-          name : 'Выздоровившие ' + countRec.toString(),
+          name : 'Выздоровевшие ' + countRec.toString(),
           mode: 'lines+markers',
           marker: {color: 'gray'},
         },
