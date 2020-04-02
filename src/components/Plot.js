@@ -410,12 +410,16 @@ export default class Plot extends Component<Props, State> {
     let recoveredPath = this.recoveredPath;
     let deadPath = this.deadPath;
 
+    let countInf = this.props.infectedPerDay.length ? this.props.infectedPerDay[this.props.infectedPerDay.length - 1] : 0;
+    let countRec = this.props.recoveredPerDay.length ? this.props.recoveredPerDay[this.props.recoveredPerDay.length - 1] : 0;
+    let countDed = this.props.deadPerDay.length ? this.props.deadPerDay[this.props.deadPerDay.length - 1] : 0;
 
     let state = { data: [
         {
           x: Array.apply(null, {length: this.props.infectedPerDay.length}).map(Number.call, Number),
           y: this.props.infectedPerDay,
           type: 'scatter',
+          name : 'Инфицированные ' + countInf.toString(),
           mode: 'lines+markers',
           marker: {color: 'red'},
         },
@@ -423,6 +427,7 @@ export default class Plot extends Component<Props, State> {
           x: Array.apply(null, {length: this.props.recoveredPerDay.length}).map(Number.call, Number),
           y: this.props.recoveredPerDay,
           type: 'scatter',
+          name : 'Выздоровившие ' + countRec.toString(),
           mode: 'lines+markers',
           marker: {color: 'gray'},
         },
@@ -430,6 +435,7 @@ export default class Plot extends Component<Props, State> {
           x: Array.apply(null, {length: this.props.deadPerDay.length}).map(Number.call, Number),
           y: this.props.deadPerDay,
           type: 'scatter',
+          name: 'Погибшие ' + countDed.toString(),
           mode: 'lines+markers',
           marker: {color: 'black'},
         },

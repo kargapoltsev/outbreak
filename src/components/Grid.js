@@ -676,7 +676,7 @@ export default class Grid extends Component<Props, State> {
     //     this.state.centerNodeNeighborsToDisplay.length > 0) {
     if (this.props.showInteractions && (interactionsParamsChanged || this.inInitialPosition())) {
       let centerR = Math.floor(this.props.gridRows / 2);
-      let centerC = centerR;
+      let centerC = Math.floor(this.props.gridCols / 2);
 
       let centerNode = this.grid[centerR][centerC];
 
@@ -892,7 +892,7 @@ export default class Grid extends Component<Props, State> {
     let chanceOfIsolationAfterSymptomsSlider = null;
     if (showAll || this.props.showChanceOfIsolationAfterSymptomsSlider) {
       chanceOfIsolationAfterSymptomsSlider =
-          this.renderSlider("Уровень самоизолируемых", this.state.chanceOfIsolationAfterSymptoms,
+          this.renderSlider("Уровень самоизоляции", this.state.chanceOfIsolationAfterSymptoms,
               (e, value) => { this.setState({chanceOfIsolationAfterSymptoms: value}); },
               0, 1, 0.01, true, false);
     }
@@ -909,7 +909,7 @@ export default class Grid extends Component<Props, State> {
     if (showAll || this.props.showDeathRateSlider) {
       let sliderName = "Фатальность";
       if (this.state.hospitalCapacityPct > -1) {
-        sliderName = "Фатальность";
+        sliderName = "Смертность";
       }
 
       deathRateSlider =
