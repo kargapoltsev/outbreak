@@ -32,7 +32,7 @@ class App extends Component<Props, State> {
                 // highlight="transmissionRate"
                 hospitalCapacityPct={0.05}
                 nodeSize={5}
-                nug={5}
+                nug={1}
                 randomSeed={100}
                 showAliveFraction={true}
                 showAllControls={true}
