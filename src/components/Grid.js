@@ -529,7 +529,7 @@ export default class Grid extends Component<Props, State> {
   }
 
   isCenterNode(r: number, c: number): boolean {
-    return r === c && r === Math.floor(this.props.gridRows / 2);
+    return r === Math.floor(this.props.gridRows / 2) && c === Math.floor(this.props.gridCols / 2);
   }
 
   maybeInfect(node: GridNode, r: number, c: number, linkedNodes: Set<GridNode>): GridNode[] {
