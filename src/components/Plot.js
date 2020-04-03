@@ -393,21 +393,28 @@ export default class Plot extends Component<Props, State> {
       deadPercent = 0;
     }
 
+
     // let infectedCB = <label><input type="checkbox" checked={this.state.showInfected} onChange={(e) => this.setState({showInfected: e.target.checked})}/> Infected: {infectedPercent}%</label>
-    let infectedCB = <span><NodeLegend type="infected"/> &nbsp;Инфицированные: {infectedPercent}%</span>
+    let infectedCB = <span><NodeLegend type="infected"/> &nbsp;Инфицированные: {infectedPercent}% ({this.props.infectedPerDay[this.props.infectedPerDay.length - 1]} человек)</span>
 
     // let recoveredCB = <label><input type="checkbox" checked={this.state.showRecovered} onChange={(e) => this.setState({showRecovered: e.target.checked})}/> Recovered: {recoveredPercent}%</label>
-    let recoveredCB = <span><NodeLegend type="removed"/> &nbsp;Выздоровевшие: {recoveredPercent}%</span>
+    let recoveredCB = <span><NodeLegend type="removed"/> &nbsp;Выздоровевшие: {recoveredPercent}% ({this.props.recoveredPerDay[this.props.recoveredPerDay.length - 1]} человек)</span>
 
     let deadCB = null;
     if (this.props.showDeaths) {
       // deadCB = <label><input type="checkbox" checked={this.state.showDead} onChange={(e) => this.setState({showDead: e.target.checked})}/> Dead: {deadPercent}%</label>
-      deadCB = <span><NodeLegend type="dead"/> <span style={{backgroundColor: '#FFA'}}>&nbsp;Погибшие: {deadPercent}%&nbsp;</span></span>
+      deadCB = <span><NodeLegend type="dead"/> <span style={{backgroundColor: '#FFA'}}>&nbsp;Погибшие: {deadPercent}% ({this.props.deadPerDay[this.props.deadPerDay.length - 1]} человек)&nbsp;</span></span>
     }
-    let healthyCB = <span><NodeLegend type="healthy"/> &nbsp;Не болевшие: {healthyPercent}%</span>;
 
-    let infectedMax = Math.max(...this.props.infectedPerDay);
-    let infectedMaxDay = this.props.infectedPerDay.indexOf( infectedMax )
+    let healthyCB = <span><NodeLegend type="healthy"/> &nbsp;Не болевшие: {healthyPercent}% ({this.props.healthyPerDay[this.props.healthyPerDay.length - 1]} человек)</span>;
+
+    let infectedMaxDay = 0;
+    let infectedMax = 0;
+    if ( this.props.infectedPerDay.length > 0 )
+    {
+      infectedMax = Math.max(...this.props.infectedPerDay);
+      infectedMaxDay = this.props.infectedPerDay.indexOf( infectedMax )
+    }
 
     let infectedMaxCB = <span><NodeLegend type="infectedMax"/> &nbsp;Максимум инфицированных: {infectedMax} ({infectedMaxDay} день)</span>;
 
