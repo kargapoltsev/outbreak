@@ -487,6 +487,7 @@ export default class Plot extends Component<Props, State> {
           <div>{infectedCB}</div>
           <div>{recoveredCB}</div>
           <div>{deadCB}</div>
+          <div>{healthyCB}</div>
         </div>
       </div>
     )
