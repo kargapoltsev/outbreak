@@ -14,6 +14,8 @@ import Plot from "./Plot"
 import Constants from "./Constants";
 
 import PlotLib from 'react-plotly.js';
+import Translation from "../translation/rus";
+
 
 type Props = {
   randomSeed: number,
@@ -932,20 +934,19 @@ export default class Grid extends Component<Props, State> {
 
     let playbackControls = null;
     if (showAll || this.props.showPlaybackControls) {
-      let newNetworkButton = <WidgetButton onClick={() => {this.setState({playing: false}); this.generate(true); this.forceUpdate();} } >Reset</WidgetButton>;
+    let newNetworkButton = <WidgetButton onClick={() => {this.setState({playing: false}); this.generate(true); this.forceUpdate();} } >{Translation.BUTTON_RESET}</WidgetButton>;
       let text = <span style={{fontSize: '10pt'}}>▷</span>;
       if (this.state.playing) {
         text = <span><b>||</b></span>;
       }
       let togglePlaybackButton = <WidgetButton highlighted={!this.state.playing} onClick={() => {this.togglePlayback(); } } >{text}</WidgetButton>;
-      let stepButton = <WidgetButton onClick={() => {this.simulateStep(); this.setState({playing: false}); } } >Step</WidgetButton>;
+    let stepButton = <WidgetButton onClick={() => {this.simulateStep(); this.setState({playing: false}); } } >{Translation.BUTTON_STEP}</WidgetButton>;
 
       playbackControls =
         <div className='playback-controls-container'>
           {newNetworkButton}
           {togglePlaybackButton}
           {stepButton}
-
           {/*{speedMinusButton}*/}
           {/*{speedPlusButton}*/}
         </div>

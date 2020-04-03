@@ -7,6 +7,7 @@ import WidgetButton from "./WidgetButton"
 import NodeLegend from "./NodeLegend"
 
 import PlotLib from 'react-plotly.js';
+import Translation from "../translation/rus";
 
 type Props = {
   hospitalCapacity: number,
@@ -452,7 +453,7 @@ export default class Plot extends Component<Props, State> {
           </div>
           <div className="plot-legend">
             <div className="plot-legend-button">
-              <WidgetButton onClick={() => {this.resetArrays()}}>Clear</WidgetButton>
+              <WidgetButton onClick={() => {this.resetArrays()}}>{Translation.BUTTON_CLEAR}</WidgetButton>
             </div>
             <div style={{display: 'flex', flexDirection: 'column'}}>
               <div>{infectedCB}</div>
