@@ -469,7 +469,7 @@ export default class Plot extends Component<Props, State> {
       let layout =  {        
           width: 920, height: 480, title: 'График',
           xaxis: {
-            title: 'Время, дни',
+            title: 'Время, дн.',
             titlefont: {
             family: 'Courier New, monospace',
             size: 18,
@@ -477,7 +477,7 @@ export default class Plot extends Component<Props, State> {
             },
           },
           yaxis: {
-            title: 'Численность населения, люди',
+            title: 'Численность населения, чел.',
             titlefont: {
             family: 'Courier New, monospace',
             size: 18,
