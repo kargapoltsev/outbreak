@@ -649,3 +649,21 @@ CODE {
 .site-name a {
   text-decoration: none;
 }
+
+ul.hl {
+  margin: 0;
+  padding: 4px;
+}
+
+ul.hl li {
+  display: inline;
+  margin-right: 5px;
+  padding: 3px;
+}
+
+.content_top {
+  top: 10px;
+  grid-area: content;
+  stroke-width: 100%;
+
+}
