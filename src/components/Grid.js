@@ -129,16 +129,16 @@ export default class Grid extends Component<Props, State> {
     daysIncubating: 14,
     daysSymptomatic: 14,
     deathRate: 0.03,
-    decreaseInEncountersAfterSymptoms: 0.25,
-    chanceOfIsolationAfterSymptoms: 0.25,
+    decreaseInEncountersAfterSymptoms: 0.0,
+    chanceOfIsolationAfterSymptoms: 0.0,
     hospitalCapacityPct: -1,
     hospitalCapacitySize: 100,
     immunityFraction: 0,
     maxIterations: -1,
     nug: 20,
-    personHours: 10,
-    transmissionProbability: 0.4,
-    travelRadius: 5,
+    personHours: 20,
+    transmissionProbability: 0.35,
+    travelRadius: 6,
 
     // Rendering parameters
     drawNodeOutlines: true,
@@ -1083,23 +1083,21 @@ export default class Grid extends Component<Props, State> {
           {/*{playbackControls}*/}
 
 
-          <div style={{width: "100&", position: "relative", "min-height": "750px"}}>
-            <div style={{width: "540px", position: "absolute", left: "-750px"}}>
+          <div style={{width: "100&", position: "relative", "min-height": "1150px"}}>
+            <div style={{width: "540px", position: "absolute", left: "-950px"}}>
               <Waypoint onEnter={this.onEnter} onLeave={this.onLeave} scrollableAncestor={window}>
                 <canvas ref={this.canvasRef} width={this.gridWidth} height={this.gridWidth} />
               </Waypoint>
               {percentAliveSlider}
 
             </div>
-            <div style={{width: "540px", position: "absolute", left: "0px"}}>
+            <div style={{width: "540px", position: "absolute", left: "20px"}}>
+              {playbackControls}
               {plot}
             </div>
 
           </div>
 
-
-
-          {playbackControls}
           {highlightedSlider}
 
           {hospitalCapacitySlider}

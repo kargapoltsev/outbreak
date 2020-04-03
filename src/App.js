@@ -32,7 +32,7 @@ class App extends Component<Props, State> {
                 gridCols={316}
                 // highlight="transmissionRate"
                 hospitalCapacityPct={0.05}
-                nodeSize={2}
+                nodeSize={3}
                 nug={1}
                 randomSeed={100}
                 showAliveFraction={true}
