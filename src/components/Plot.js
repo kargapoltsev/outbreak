@@ -477,7 +477,7 @@ export default class Plot extends Component<Props, State> {
             },
           },
           yaxis: {
-            title: 'Численость населения, агенты',
+            title: 'Численность населения, люди',
             titlefont: {
             family: 'Courier New, monospace',
             size: 18,
