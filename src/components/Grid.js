@@ -1074,14 +1074,32 @@ export default class Grid extends Component<Props, State> {
 
     return (
         <div className="widget-container" style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
-          <div style={{display: 'flex', flexDirection: 'row'}}>
-            <Waypoint onEnter={this.onEnter} onLeave={this.onLeave} scrollableAncestor={window}>
-              <canvas ref={this.canvasRef} width={this.gridWidth} height={this.gridWidth} />
-            </Waypoint>
-            {percentAliveSlider}
+          {/*<div style={{display: 'flex', flexDirection: 'row'}}>*/}
+          {/*  <Waypoint onEnter={this.onEnter} onLeave={this.onLeave} scrollableAncestor={window}>*/}
+          {/*    <canvas ref={this.canvasRef} width={this.gridWidth} height={this.gridWidth} />*/}
+          {/*  </Waypoint>*/}
+          {/*  {percentAliveSlider}*/}
+          {/*</div>*/}
+          {/*{playbackControls}*/}
+
+
+          <div style={{width: "100&", position: "relative", "min-height": "750px"}}>
+            <div style={{width: "540px", position: "absolute", left: "-750px"}}>
+              <Waypoint onEnter={this.onEnter} onLeave={this.onLeave} scrollableAncestor={window}>
+                <canvas ref={this.canvasRef} width={this.gridWidth} height={this.gridWidth} />
+              </Waypoint>
+              {percentAliveSlider}
+
+            </div>
+            <div style={{width: "540px", position: "absolute", left: "0px"}}>
+              {plot}
+            </div>
+
           </div>
+
+
+
           {playbackControls}
-          <div style={{height: "0.5em"}}/>
           {highlightedSlider}
 
           {hospitalCapacitySlider}
@@ -1102,12 +1120,7 @@ export default class Grid extends Component<Props, State> {
 
           {protip}
 
-          {/*<PlotLib*/}
-          {/*    data={state.data}*/}
-          {/*    layout={state.layout}*/}
-          {/*/>*/}
 
-          {plot}
 
 
           {/*{speedSlider}*/}
