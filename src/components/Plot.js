@@ -369,6 +369,7 @@ export default class Plot extends Component<Props, State> {
     this.props.deadPerDay.length = 0;
     this.props.infectedPerDay.length = 0;
     this.props.recoveredPerDay.length = 0;
+    this.props.healthyPerDay.length = 0;
 
     this.redraw();
     this.forceUpdate();
