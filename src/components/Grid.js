@@ -903,7 +903,7 @@ export default class Grid extends Component<Props, State> {
     let decreaseInEncountersAfterSymptomsSlider = null;
     if (showAll || this.props.showDecreaseInEncountersAfterSymptomsSlider) {
       decreaseInEncountersAfterSymptomsSlider =
-          this.renderSlider("Уровень соблюдения самоизоляции, доли (При 1% пациенты имеют 0 встреч с другими людьми)", this.state.decreaseInEncountersAfterSymptoms,
+          this.renderSlider("Уровень соблюдения самоизоляции, доли (При 1 пациенты имеют 0 встреч с другими людьми)", this.state.decreaseInEncountersAfterSymptoms,
               (e, value) => { this.setState({decreaseInEncountersAfterSymptoms: value}); },
               0, 1, 0.01, false, false);
     }
