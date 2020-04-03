@@ -378,10 +378,10 @@ export default class Plot extends Component<Props, State> {
   render() {
     this.redraw();
 
-    let infectedPercent = Math.round(this.props.infectedPerDay[this.props.infectedPerDay.length - 1] / this.props.population * 100);
-    let recoveredPercent = Math.round(this.props.recoveredPerDay[this.props.recoveredPerDay.length - 1] / this.props.population * 100);
-    let deadPercent = Math.round(this.props.deadPerDay[this.props.deadPerDay.length - 1] / this.props.population * 100);
-    let healthyPercent = Math.round(this.props.healthyPerDay[this.props.healthyPerDay.length - 1] / this.props.population * 100);
+    let infectedPercent = (this.props.infectedPerDay[this.props.infectedPerDay.length - 1] / this.props.population * 100).toFixed(2);
+    let recoveredPercent = (this.props.recoveredPerDay[this.props.recoveredPerDay.length - 1] / this.props.population * 100).toFixed(2);
+    let deadPercent = (this.props.deadPerDay[this.props.deadPerDay.length - 1] / this.props.population * 100).toFixed(2);
+    let healthyPercent = (this.props.healthyPerDay[this.props.healthyPerDay.length - 1] / this.props.population * 100).toFixed(2);
 
     if (isNaN(infectedPercent)) {
       infectedPercent = 0;
