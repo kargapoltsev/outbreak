@@ -770,8 +770,7 @@ export default class Grid extends Component<Props, State> {
   }
 
   static renderPercentage(fraction: number) {
-    // let percent = Math.round(fraction * 100);
-    let percent = parseFloat(fraction).toPrecision(4) * 100 ;
+    let percent = Math.round(fraction * 100);
     return <span><strong>{percent}</strong>%</span>;
   }
 
@@ -812,12 +811,12 @@ export default class Grid extends Component<Props, State> {
                   value={value}
                   onChange={onChange}/>
         </div>
-        <div className="slider-minus">
-          <WidgetButton size="small" onClick={() => onChange(null, Math.max(value - step, min))}><span className="plus-minus-button">–</span></WidgetButton>
-        </div>
-        <div className="slider-plus">
-          <WidgetButton size="small" onClick={() => onChange(null, Math.min(value + step, max))}><span className="plus-minus-button">+</span></WidgetButton>
-        </div>
+        {/*<div className="slider-minus">*/}
+        {/*  <WidgetButton size="small" onClick={() => onChange(null, Math.max(value - step, min))}><span className="plus-minus-button">–</span></WidgetButton>*/}
+        {/*</div>*/}
+        {/*<div className="slider-plus">*/}
+        {/*  <WidgetButton size="small" onClick={() => onChange(null, Math.min(value + step, max))}><span className="plus-minus-button">+</span></WidgetButton>*/}
+        {/*</div>*/}
       </div>
     );
   }
@@ -831,7 +830,7 @@ export default class Grid extends Component<Props, State> {
     let transmissionProbabilitySlider = null;
     if (showAll || this.props.showTransmissionProbabilitySlider) {
       transmissionProbabilitySlider =
-          this.renderSlider("Вероятность заражения, доли", this.state.transmissionProbability,
+          this.renderSlider("Вероятность заражения", this.state.transmissionProbability,
               (e, value) => { this.setState({transmissionProbability: value}); },
               0, this.props.maxTransmissionRate, 0.01, false, this.props.highlight === "transmissionRate");
     }
@@ -854,9 +853,9 @@ export default class Grid extends Component<Props, State> {
       //         (e, value) => { this.setState({hospitalCapacitySliderHighlighted: true}); },
       //         0, 1, 0.01, true, this.state.hospitalCapacitySliderHighlighted);
       hospitalCapacitySlider =
-          this.renderSlider("Вместимость стационара, доли", this.state.hospitalCapacityPct,
+          this.renderSlider("Вместимость стационара", this.state.hospitalCapacityPct,
               (e, value) => { this.setState({hospitalCapacityPct: value}); },
-              0, 1, 0.01, false, false);
+              0, 1, 0.01, true, false);
 
     }
 
@@ -865,7 +864,7 @@ export default class Grid extends Component<Props, State> {
       travelRadiusSlider =
           this.renderSlider("Размер круга общения (Чем выше, тем вероятнее встреча с малознакомыми людьми)", this.state.travelRadius,
               (e, value) => { this.setState({travelRadius: value}); },
-              0, Math.min(100, Math.floor(this.props.gridRows/2)), 1, false, false);
+              0, Math.min(30, Math.floor(this.props.gridRows/2)), 1, false, false);
     }
 
     let personHoursSlider = null;
@@ -879,7 +878,7 @@ export default class Grid extends Component<Props, State> {
     let daysIncubatingSlider = null;
     if (showAll || this.props.showDaysPerStateControls) {
       daysIncubatingSlider =
-          this.renderSlider("Длительность инкубационного периода, дни", this.state.daysIncubating,
+          this.renderSlider("Инкубационный период, дни", this.state.daysIncubating,
               (e, value) => { this.setState({daysIncubating: value}); },
               0, 20, 1, false, false);
     }
@@ -887,7 +886,7 @@ export default class Grid extends Component<Props, State> {
     let daysSymptomaticSlider = null;
     if (showAll || this.props.showDaysPerStateControls) {
       daysSymptomaticSlider =
-          this.renderSlider("Длительность болезни (симптомов), дни", this.state.daysSymptomatic,
+          this.renderSlider("Длительность симптомов, дни", this.state.daysSymptomatic,
               (e, value) => { this.setState({daysSymptomatic: value}); },
               1, 20, 1, false, false);
     }
@@ -895,30 +894,30 @@ export default class Grid extends Component<Props, State> {
     let chanceOfIsolationAfterSymptomsSlider = null;
     if (showAll || this.props.showChanceOfIsolationAfterSymptomsSlider) {
       chanceOfIsolationAfterSymptomsSlider =
-          this.renderSlider("Уровень самоизоляции, доли", this.state.chanceOfIsolationAfterSymptoms,
+          this.renderSlider("Уровень самоизоляции", this.state.chanceOfIsolationAfterSymptoms,
               (e, value) => { this.setState({chanceOfIsolationAfterSymptoms: value}); },
-              0, 1, 0.01, false, false);
+              0, 1, 0.01, true, false);
     }
 
     let decreaseInEncountersAfterSymptomsSlider = null;
     if (showAll || this.props.showDecreaseInEncountersAfterSymptomsSlider) {
       decreaseInEncountersAfterSymptomsSlider =
-          this.renderSlider("Уровень соблюдения самоизоляции, доли (При 1 пациенты имеют 0 встреч с другими людьми)", this.state.decreaseInEncountersAfterSymptoms,
+          this.renderSlider("Уровень соблюдения самоизоляции (При 100% пациенты имеют 0 встреч с другими людьми)", this.state.decreaseInEncountersAfterSymptoms,
               (e, value) => { this.setState({decreaseInEncountersAfterSymptoms: value}); },
-              0, 1, 0.01, false, false);
+              0, 1, 0.01, true, false);
     }
 
     let deathRateSlider = null;
     if (showAll || this.props.showDeathRateSlider) {
-      let sliderName = "Введите уровень смертности, доли";
+      let sliderName = "Фатальность";
       if (this.state.hospitalCapacityPct > -1) {
-        sliderName = "Введите уровень смертности, доли";
+        sliderName = "Смертность";
       }
 
       deathRateSlider =
           this.renderSlider(sliderName, this.state.deathRate,
               (e, value) => { this.setState({deathRate: value}); },
-              0, 1, 0.01, false, false);
+              0, 0.3, 0.01, true, false);
     }
 
     // let speedSlider = null;
