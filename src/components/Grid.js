@@ -132,6 +132,7 @@ export default class Grid extends Component<Props, State> {
     decreaseInEncountersAfterSymptoms: 0.25,
     chanceOfIsolationAfterSymptoms: 0.25,
     hospitalCapacityPct: -1,
+    hospitalCapacitySize: 100,
     immunityFraction: 0,
     maxIterations: -1,
     nug: 20,
@@ -239,6 +240,7 @@ export default class Grid extends Component<Props, State> {
       decreaseInEncountersAfterSymptoms: props.decreaseInEncountersAfterSymptoms,
       chanceOfIsolationAfterSymptoms: props.chanceOfIsolationAfterSymptoms,
       hospitalCapacityPct: props.hospitalCapacityPct,
+      hospitalCapacitySize: props.hospitalCapacitySize,
       immunityFraction: props.immunityFraction,
       longDistaceNetworkActive: props.addLinkedNodes,
       maxIterations: props.maxIterations,
@@ -813,12 +815,12 @@ export default class Grid extends Component<Props, State> {
                   value={value}
                   onChange={onChange}/>
         </div>
-        {/*<div className="slider-minus">*/}
-        {/*  <WidgetButton size="small" onClick={() => onChange(null, Math.max(value - step, min))}><span className="plus-minus-button">–</span></WidgetButton>*/}
-        {/*</div>*/}
-        {/*<div className="slider-plus">*/}
-        {/*  <WidgetButton size="small" onClick={() => onChange(null, Math.min(value + step, max))}><span className="plus-minus-button">+</span></WidgetButton>*/}
-        {/*</div>*/}
+        <div className="slider-minus">
+          <WidgetButton size="small" onClick={() => onChange(null, Math.max(value - step, min))}><span className="plus-minus-button">–</span></WidgetButton>
+        </div>
+        <div className="slider-plus">
+          <WidgetButton size="small" onClick={() => onChange(null, Math.min(value + step, max))}><span className="plus-minus-button">+</span></WidgetButton>
+        </div>
       </div>
     );
   }
@@ -854,10 +856,30 @@ export default class Grid extends Component<Props, State> {
       //     this.renderSlider("Hospital capacity", this.state.hospitalCapacityPct,
       //         (e, value) => { this.setState({hospitalCapacitySliderHighlighted: true}); },
       //         0, 1, 0.01, true, this.state.hospitalCapacitySliderHighlighted);
+
+
+
+      let nRows = this.props.gridRows;
+      let nCols = this.props.gridCols;
+
+      let population = nRows * nCols;
+
+      // console.log( population );
+
       hospitalCapacitySlider =
-          this.renderSlider("Вместимость стационара", this.state.hospitalCapacityPct,
-              (e, value) => { this.setState({hospitalCapacityPct: value}); },
-              0, 1, 0.001, false, false,false);
+          this.renderSlider("Вместимость стационара, человек", this.state.hospitalCapacitySize,
+              (e, value) => {
+
+                  let percentage = value / population;
+
+                  console.log( percentage );
+                  // console.log( value );
+
+                this.setState({hospitalCapacitySize: value});
+                this.setState({hospitalCapacityPct: percentage});
+
+                },
+              0, 5000, 1, false, false, true);
 
     }
 
