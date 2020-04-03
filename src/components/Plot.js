@@ -414,14 +414,6 @@ export default class Plot extends Component<Props, State> {
     let infectedMax = this.props.infectedPerDay.length ? Math.max(...this.props.infectedPerDay) : 1;
     let infectedMaxDay = this.props.infectedPerDay.length ? this.props.infectedPerDay.indexOf( infectedMax ) : 0;
 
-    let infectedMaxDay = 0;
-    let infectedMax = 0;
-    if ( this.props.infectedPerDay.length > 0 )
-    {
-      infectedMax = Math.max(...this.props.infectedPerDay);
-      infectedMaxDay = this.props.infectedPerDay.indexOf( infectedMax )
-    }
-
     let infectedMaxCB = <span><NodeLegend type="infectedMax"/> &nbsp;Максимум инфицированных: {infectedMax} ({infectedMaxDay} день)</span>;
 
 
