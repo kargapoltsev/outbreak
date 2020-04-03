@@ -404,7 +404,7 @@ export default class Plot extends Component<Props, State> {
       // deadCB = <label><input type="checkbox" checked={this.state.showDead} onChange={(e) => this.setState({showDead: e.target.checked})}/> Dead: {deadPercent}%</label>
       deadCB = <span><NodeLegend type="dead"/> <span style={{backgroundColor: '#FFA'}}>&nbsp;Погибшие: {deadPercent}%&nbsp;</span></span>
     }
-    let healthyCB = <span><NodeLegend type="healthy"/> &nbsp;Здоровые: {healthyPercent}%</span>;
+    let healthyCB = <span><NodeLegend type="healthy"/> &nbsp;Не болевшие: {healthyPercent}%</span>;
 
     let infectedMax = Math.max(...this.props.infectedPerDay);
     let infectedMaxDay = this.props.infectedPerDay.indexOf( infectedMax )
@@ -455,7 +455,7 @@ export default class Plot extends Component<Props, State> {
           x: Array.apply(null, {length: this.props.healthyPerDay.length}).map(Number.call, Number),
           y: this.props.healthyPerDay,
           type: 'scatter',
-          name: 'Здоровые ' + countHel.toString(),
+          name: 'Не болевшие ' + countHel.toString(),
           mode: 'lines+markers',
           marker: {color: 'green'},
         },
