@@ -393,6 +393,10 @@ export default class Plot extends Component<Props, State> {
       deadPercent = 0;
     }
 
+    if (isNaN(healthyPercent)) {
+      healthyPercent = 0;
+    }
+
     // let infectedCB = <label><input type="checkbox" checked={this.state.showInfected} onChange={(e) => this.setState({showInfected: e.target.checked})}/> Infected: {infectedPercent}%</label>
     let infectedCB = <span><NodeLegend type="infected"/> &nbsp;Инфицированные: {infectedPercent}%</span>
 
@@ -406,8 +410,9 @@ export default class Plot extends Component<Props, State> {
     }
     let healthyCB = <span><NodeLegend type="healthy"/> &nbsp;Не болевшие: {healthyPercent}%</span>;
 
-    let infectedMax = Math.max(...this.props.infectedPerDay);
-    let infectedMaxDay = this.props.infectedPerDay.indexOf( infectedMax )
+    //TODO need replace 1 
+    let infectedMax = this.props.infectedPerDay.length ? Math.max(...this.props.infectedPerDay) : 1;
+    let infectedMaxDay = this.props.infectedPerDay.length ? this.props.infectedPerDay.indexOf( infectedMax ) : 0;
 
     let infectedMaxCB = <span><NodeLegend type="infectedMax"/> &nbsp;Максимум инфицированных: {infectedMax} ({infectedMaxDay} день)</span>;
 
