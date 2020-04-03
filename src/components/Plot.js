@@ -489,41 +489,44 @@ export default class Plot extends Component<Props, State> {
       };
 
     return (
-      <div>
-        <div className="plot-container">
-          {/*<div className="plot-yaxis"><b>Численость, агенты ⟶</b></div>*/}
-          <div className="plot-xaxis">Время, дни ⟶</div>
-          <div className="plot-chart">
-            <canvas ref={this.canvasRef} width={widthToUse} height={this.height} />
-          </div>
-          <div className="plot-legend">
-            <div className="plot-legend-button">
-              <WidgetButton onClick={() => {this.resetArrays()}}>{Translation.BUTTON_CLEAR}</WidgetButton>
-            </div>
-            <div style={{display: 'flex', flexDirection: 'column'}}>
-              <div>{infectedCB}</div>
-              <div>{recoveredCB}</div>
-              <div>{deadCB}</div>
-              <div>{healthyCB}</div>
-            </div>
-          </div>
-        </div>
-
-
+        <div>
+          {/*<div className="plot-container">*/}
+          {/*  /!*<div className="plot-yaxis"><b>Численость, агенты ⟶</b></div>*!/*/}
+          {/*  <div className="plot-xaxis">Время, дни ⟶</div>*/}
+          {/*  <div className="plot-chart">*/}
+          {/*    <canvas ref={this.canvasRef} width={widthToUse} height={this.height} />*/}
+          {/*  </div>*/}
+          {/*  <div className="plot-legend">*/}
+          {/*    <div className="plot-legend-button">*/}
+          {/*    </div>*/}
+          {/*    <div style={{display: 'flex', flexDirection: 'column'}}>*/}
+          {/*      <div>{infectedCB}</div>*/}
+          {/*      <div>{recoveredCB}</div>*/}
+          {/*      <div>{deadCB}</div>*/}
+          {/*      <div>{healthyCB}</div>*/}
+          {/*    </div>*/}
+          {/*  </div>*/}
+          {/*</div>*/}
 
           <PlotLib
               data={data}
               layout={layout}
           />
 
-        <div style={{display: 'flex', flexDirection: 'column'}}>
-          <div>{infectedCB}</div>
-          <div>{recoveredCB}</div>
-          <div>{deadCB}</div>
-          <div>{healthyCB}</div>
-          <div>{infectedMaxCB}</div>
+          <div style={{display: 'flex', flexDirection: 'column'}}>
+            <div>{infectedCB}</div>
+            <div>{recoveredCB}</div>
+            <div>{deadCB}</div>
+            <div>{healthyCB}</div>
+            <div>{infectedMaxCB}</div>
+          </div>
+
+          <div style={{'margin-top': '50px'}}>
+            <WidgetButton onClick={() => {this.resetArrays()}}>{Translation.BUTTON_CLEAR}</WidgetButton>
+          </div>
+
+
         </div>
-      </div>
     )
   }
 }
