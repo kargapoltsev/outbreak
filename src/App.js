@@ -109,6 +109,9 @@ class App extends Component<Props, State> {
               <li><NodeLegend type="infected"/> &nbsp;<b>Инфицирован (с симптомами)</b></li>
               <li><NodeLegend type="removed"/> &nbsp;<b>Выздоровел</b></li>
             </ul>
+            <ul class="hl">
+              <li><NodeLegend type="isolating"/> &nbsp;<b>Самоизоляция</b></li>
+            </ul>
           </ul>          
         </div>
         <div className="content">

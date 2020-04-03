@@ -13,6 +13,8 @@ export default class NodeLegend extends Component<{type: string}> {
       color = Constants.REMOVED_COLOR;
     } else if (this.props.type === 'dead') {
       color = Constants.DEAD_COLOR;
+    } else if (this.props.type === 'isolating') {
+      color = Constants.ISOLATING_COLOR;
     }
     return <div style={{marginBottom: "-2px", border: "1px black solid", width: "1rem", height: "1rem", backgroundColor: color, display: "inline-block"}}/>;
   }
