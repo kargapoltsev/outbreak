@@ -126,8 +126,8 @@ export default class Grid extends Component<Props, State> {
     gridRows: 1,
 
     // Simulation parameters
-    daysIncubating: 7,
-    daysSymptomatic: 8,
+    daysIncubating: 14,
+    daysSymptomatic: 14,
     deathRate: 0.03,
     decreaseInEncountersAfterSymptoms: 0.25,
     chanceOfIsolationAfterSymptoms: 0.25,
@@ -933,7 +933,7 @@ export default class Grid extends Component<Props, State> {
     let decreaseInEncountersAfterSymptomsSlider = null;
     if (showAll || this.props.showDecreaseInEncountersAfterSymptomsSlider) {
       decreaseInEncountersAfterSymptomsSlider =
-          this.renderSlider("Уровень соблюдения самоизоляции (При 100% пациенты имеют 0 встреч с другими людьми)", this.state.decreaseInEncountersAfterSymptoms,
+          this.renderSlider("Уровень соблюдения самоизоляции (При 1 пациенты имеют 0 встреч с другими людьми)", this.state.decreaseInEncountersAfterSymptoms,
               (e, value) => { this.setState({decreaseInEncountersAfterSymptoms: value}); },
               0, 1, 0.01, false, false, false);
     }
