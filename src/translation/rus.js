@@ -1,14 +1,14 @@
 
 export default class Translation {
-  static HOSPITAL_CAPACITY = 'Вместимость стационара, чел.';
-  static INPUT_FATALITY_RATE = 'Смертность, %';
-  static SELF_QUARANTINE_RATE = 'Количество людей на самоизоляции, %';
-  static SELF_QUARANTINE_STRICTNESS = 'Соблюдение самоизоляции людьми, находящимися на самоизоляции, %';
-  static ENCOUNTERS_PER_DAY = 'Количество взаимодействий человека с другими людьми в день';
-  static TRAVEL_RADIUS = 'Ограничение передвижения';
-  static TRANSMISSION_RATE = 'Вероятность заражения при взаимодействии, %';
-  static DAYS_IN_INCUBATION = 'Длительность инкубационного периода, дн.';
-  static DAYS_WITH_SYMPTOMS = 'Длительность болезни (после инкубационного периода), дн.';
+  static HOSPITAL_CAPACITY = 'Вместимость больниц';
+  static INPUT_FATALITY_RATE = 'Летальность';
+  static SELF_QUARANTINE_RATE = 'Уровень самоизоляции';
+  static SELF_QUARANTINE_STRICTNESS = 'Уровень соблюдения самоизоляции(При 100% агенты не встречаются с другими агентами)';
+  static ENCOUNTERS_PER_DAY = 'Контактов за день';
+  static TRAVEL_RADIUS = 'Радиус перемещения(Чем выше, тем вероятнее встреча с малознакомыми людьми)';
+  static TRANSMISSION_RATE = 'Вероятность заражения';
+  static DAYS_IN_INCUBATION = 'Инкубационный период, дней';
+  static DAYS_WITH_SYMPTOMS = 'Длительность симптомов, дней';
   static BUTTON_CLEAR = 'Очистить';
   static BUTTON_RESET = 'Сброс';
   static BUTTON_STEP = 'Шаг';

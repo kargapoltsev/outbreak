@@ -841,7 +841,7 @@ export default class Grid extends Component<Props, State> {
     let transmissionProbabilitySlider = null;
     if (showAll || this.props.showTransmissionProbabilitySlider) {
       transmissionProbabilitySlider =
-          this.renderSlider(Translation.TRANSMISSION_RATE, this.state.transmissionProbability,
+          this.renderSlider("Вероятность заражения при взаимодействии, %", this.state.transmissionProbability,
               (e, value) => { this.setState({transmissionProbability: value}); },
               0, this.props.maxTransmissionRate, 0.01, false, this.props.highlight === "transmissionRate", false);
     }
@@ -874,7 +874,7 @@ export default class Grid extends Component<Props, State> {
       // console.log( population );
 
       hospitalCapacitySlider =
-          this.renderSlider(Translation.HOSPITAL_CAPACITY, this.state.hospitalCapacitySize,
+          this.renderSlider("Вместимость стационара, чел.", this.state.hospitalCapacitySize,
               (e, value) => {
 
                   let percentage = value / population;
@@ -893,7 +893,7 @@ export default class Grid extends Component<Props, State> {
     let travelRadiusSlider = null;
     if (showAll || this.props.showTravelRadiusSlider) {
       travelRadiusSlider =
-          this.renderSlider(Translation.TRAVEL_RADIUS, this.state.travelRadius,
+          this.renderSlider("Ограничение передвижения", this.state.travelRadius,
               (e, value) => { this.setState({travelRadius: value}); },
               0, Math.min(100, Math.floor(this.props.gridRows/2)), 1, false, false, true);
     }
@@ -901,7 +901,7 @@ export default class Grid extends Component<Props, State> {
     let personHoursSlider = null;
     if (showAll || this.props.showPersonHoursSlider) {
       personHoursSlider =
-          this.renderSlider(Translation.ENCOUNTERS_PER_DAY, this.state.personHours,
+          this.renderSlider("Количество взаимодействий человека с другими людьми в день", this.state.personHours,
               (e, value) => { this.setState({personHours: value}); },
               1, 30, 1, false, false, true);
     }
@@ -909,7 +909,7 @@ export default class Grid extends Component<Props, State> {
     let daysIncubatingSlider = null;
     if (showAll || this.props.showDaysPerStateControls) {
       daysIncubatingSlider =
-          this.renderSlider(Translation.DAYS_IN_INCUBATION, this.state.daysIncubating,
+          this.renderSlider("Длительность инкубационного периода, дн.", this.state.daysIncubating,
               (e, value) => { this.setState({daysIncubating: value}); },
               0, 20, 1, false, false, true);
     }
@@ -917,7 +917,7 @@ export default class Grid extends Component<Props, State> {
     let daysSymptomaticSlider = null;
     if (showAll || this.props.showDaysPerStateControls) {
       daysSymptomaticSlider =
-          this.renderSlider(Translation.DAYS_WITH_SYMPTOMS, this.state.daysSymptomatic,
+          this.renderSlider("Длительность болезни (после инкубационного периода), дн.", this.state.daysSymptomatic,
               (e, value) => { this.setState({daysSymptomatic: value}); },
               1, 20, 1, false, false, true);
     }
@@ -925,7 +925,7 @@ export default class Grid extends Component<Props, State> {
     let chanceOfIsolationAfterSymptomsSlider = null;
     if (showAll || this.props.showChanceOfIsolationAfterSymptomsSlider) {
       chanceOfIsolationAfterSymptomsSlider =
-          this.renderSlider(Translation.SELF_QUARANTINE_RATE, this.state.chanceOfIsolationAfterSymptoms,
+          this.renderSlider("Количество людей на самоизоляции, %", this.state.chanceOfIsolationAfterSymptoms,
               (e, value) => { this.setState({chanceOfIsolationAfterSymptoms: value}); },
               0, 1, 0.01, false, false, false);
     }
@@ -933,16 +933,16 @@ export default class Grid extends Component<Props, State> {
     let decreaseInEncountersAfterSymptomsSlider = null;
     if (showAll || this.props.showDecreaseInEncountersAfterSymptomsSlider) {
       decreaseInEncountersAfterSymptomsSlider =
-          this.renderSlider(Translation.SELF_QUARANTINE_STRICTNESS, this.state.decreaseInEncountersAfterSymptoms,
+          this.renderSlider("Соблюдение самоизоляции людьми, находящимися на самоизоляции, %", this.state.decreaseInEncountersAfterSymptoms,
               (e, value) => { this.setState({decreaseInEncountersAfterSymptoms: value}); },
               0, 1, 0.01, false, false, false);
     }
 
     let deathRateSlider = null;
     if (showAll || this.props.showDeathRateSlider) {
-      let sliderName = Translation.INPUT_FATALITY_RATE;
+      let sliderName = "Смертность, %";
       if (this.state.hospitalCapacityPct > -1) {
-        sliderName = Translation.INPUT_FATALITY_RATE;
+        sliderName = "Смертность, %";
       }
 
       deathRateSlider =
@@ -1074,14 +1074,30 @@ export default class Grid extends Component<Props, State> {
 
     return (
         <div className="widget-container" style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
-          <div style={{display: 'flex', flexDirection: 'row'}}>
-            <Waypoint onEnter={this.onEnter} onLeave={this.onLeave} scrollableAncestor={window}>
-              <canvas ref={this.canvasRef} width={this.gridWidth} height={this.gridWidth} />
-            </Waypoint>
-            {percentAliveSlider}
+          {/*<div style={{display: 'flex', flexDirection: 'row'}}>*/}
+          {/*  <Waypoint onEnter={this.onEnter} onLeave={this.onLeave} scrollableAncestor={window}>*/}
+          {/*    <canvas ref={this.canvasRef} width={this.gridWidth} height={this.gridWidth} />*/}
+          {/*  </Waypoint>*/}
+          {/*  {percentAliveSlider}*/}
+          {/*</div>*/}
+          {/*{playbackControls}*/}
+
+
+          <div style={{width: "100&", position: "relative", "min-height": "1150px"}}>
+            <div style={{width: "540px", position: "absolute", left: "-950px"}}>
+              <Waypoint onEnter={this.onEnter} onLeave={this.onLeave} scrollableAncestor={window}>
+                <canvas ref={this.canvasRef} width={this.gridWidth} height={this.gridWidth} />
+              </Waypoint>
+              {percentAliveSlider}
+
+            </div>
+            <div style={{width: "540px", position: "absolute", left: "20px"}}>
+              {playbackControls}
+              {plot}
+            </div>
+
           </div>
-          {playbackControls}
-          <div style={{height: "0.5em"}}/>
+
           {highlightedSlider}
 
           {hospitalCapacitySlider}
@@ -1102,12 +1118,7 @@ export default class Grid extends Component<Props, State> {
 
           {protip}
 
-          {/*<PlotLib*/}
-          {/*    data={state.data}*/}
-          {/*    layout={state.layout}*/}
-          {/*/>*/}
 
-          {plot}
 
 
           {/*{speedSlider}*/}
