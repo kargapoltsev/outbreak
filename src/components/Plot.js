@@ -398,21 +398,29 @@ export default class Plot extends Component<Props, State> {
     }
 
     // let infectedCB = <label><input type="checkbox" checked={this.state.showInfected} onChange={(e) => this.setState({showInfected: e.target.checked})}/> Infected: {infectedPercent}%</label>
-    let infectedCB = <span><NodeLegend type="infected"/> &nbsp;Инфицированные: {infectedPercent}%</span>
+    let infectedCB = <span><NodeLegend type="infected"/> &nbsp;Инфицированные: {infectedPercent}% ({this.props.infectedPerDay[this.props.infectedPerDay.length - 1]} человек)</span>
 
     // let recoveredCB = <label><input type="checkbox" checked={this.state.showRecovered} onChange={(e) => this.setState({showRecovered: e.target.checked})}/> Recovered: {recoveredPercent}%</label>
-    let recoveredCB = <span><NodeLegend type="removed"/> &nbsp;Выздоровевшие: {recoveredPercent}%</span>
+    let recoveredCB = <span><NodeLegend type="removed"/> &nbsp;Выздоровевшие: {recoveredPercent}% ({this.props.recoveredPerDay[this.props.recoveredPerDay.length - 1]} человек)</span>
 
     let deadCB = null;
     if (this.props.showDeaths) {
       // deadCB = <label><input type="checkbox" checked={this.state.showDead} onChange={(e) => this.setState({showDead: e.target.checked})}/> Dead: {deadPercent}%</label>
-      deadCB = <span><NodeLegend type="dead"/> <span style={{backgroundColor: '#FFA'}}>&nbsp;Погибшие: {deadPercent}%&nbsp;</span></span>
+      deadCB = <span><NodeLegend type="dead"/> <span style={{backgroundColor: '#FFA'}}>&nbsp;Погибшие: {deadPercent}% ({this.props.deadPerDay[this.props.deadPerDay.length - 1]} человек)&nbsp;</span></span>
     }
-    let healthyCB = <span><NodeLegend type="healthy"/> &nbsp;Не болевшие: {healthyPercent}%</span>;
 
+    let healthyCB = <span><NodeLegend type="healthy"/> &nbsp;Не болевшие: {healthyPercent}% ({this.props.healthyPerDay[this.props.healthyPerDay.length - 1]} человек)</span>;
     //TODO need replace 1 
     let infectedMax = this.props.infectedPerDay.length ? Math.max(...this.props.infectedPerDay) : 1;
     let infectedMaxDay = this.props.infectedPerDay.length ? this.props.infectedPerDay.indexOf( infectedMax ) : 0;
+
+    let infectedMaxDay = 0;
+    let infectedMax = 0;
+    if ( this.props.infectedPerDay.length > 0 )
+    {
+      infectedMax = Math.max(...this.props.infectedPerDay);
+      infectedMaxDay = this.props.infectedPerDay.indexOf( infectedMax )
+    }
 
     let infectedMaxCB = <span><NodeLegend type="infectedMax"/> &nbsp;Максимум инфицированных: {infectedMax} ({infectedMaxDay} день)</span>;
 
@@ -487,41 +495,44 @@ export default class Plot extends Component<Props, State> {
       };
 
     return (
-      <div>
-        <div className="plot-container">
-          {/*<div className="plot-yaxis"><b>Численость, агенты ⟶</b></div>*/}
-          <div className="plot-xaxis">Время, дни ⟶</div>
-          <div className="plot-chart">
-            <canvas ref={this.canvasRef} width={widthToUse} height={this.height} />
-          </div>
-          <div className="plot-legend">
-            <div className="plot-legend-button">
-              <WidgetButton onClick={() => {this.resetArrays()}}>{Translation.BUTTON_CLEAR}</WidgetButton>
-            </div>
-            <div style={{display: 'flex', flexDirection: 'column'}}>
-              <div>{infectedCB}</div>
-              <div>{recoveredCB}</div>
-              <div>{deadCB}</div>
-              <div>{healthyCB}</div>
-            </div>
-          </div>
-        </div>
-
-
+        <div>
+          {/*<div className="plot-container">*/}
+          {/*  /!*<div className="plot-yaxis"><b>Численость, агенты ⟶</b></div>*!/*/}
+          {/*  <div className="plot-xaxis">Время, дни ⟶</div>*/}
+          {/*  <div className="plot-chart">*/}
+          {/*    <canvas ref={this.canvasRef} width={widthToUse} height={this.height} />*/}
+          {/*  </div>*/}
+          {/*  <div className="plot-legend">*/}
+          {/*    <div className="plot-legend-button">*/}
+          {/*    </div>*/}
+          {/*    <div style={{display: 'flex', flexDirection: 'column'}}>*/}
+          {/*      <div>{infectedCB}</div>*/}
+          {/*      <div>{recoveredCB}</div>*/}
+          {/*      <div>{deadCB}</div>*/}
+          {/*      <div>{healthyCB}</div>*/}
+          {/*    </div>*/}
+          {/*  </div>*/}
+          {/*</div>*/}
 
           <PlotLib
               data={data}
               layout={layout}
           />
 
-        <div style={{display: 'flex', flexDirection: 'column'}}>
-          <div>{infectedCB}</div>
-          <div>{recoveredCB}</div>
-          <div>{deadCB}</div>
-          <div>{healthyCB}</div>
-          <div>{infectedMaxCB}</div>
+          <div style={{display: 'flex', flexDirection: 'column'}}>
+            <div>{infectedCB}</div>
+            <div>{recoveredCB}</div>
+            <div>{deadCB}</div>
+            <div>{healthyCB}</div>
+            <div>{infectedMaxCB}</div>
+          </div>
+
+          <div style={{'margin-top': '50px'}}>
+            <WidgetButton onClick={() => {this.resetArrays()}}>{Translation.BUTTON_CLEAR}</WidgetButton>
+          </div>
+
+
         </div>
-      </div>
     )
   }
 }
