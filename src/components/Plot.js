@@ -18,6 +18,7 @@ type Props = {
   population: number,
   recoveredPerDay: number[],
   showDeaths: boolean,
+  isolatePerDay: number[],
 }
 
 type State = {
@@ -370,6 +371,7 @@ export default class Plot extends Component<Props, State> {
     this.props.infectedPerDay.length = 0;
     this.props.recoveredPerDay.length = 0;
     this.props.healthyPerDay.length = 0;
+    this.props.isolatePerDay.length = 0;
 
     this.redraw();
     this.forceUpdate();
@@ -382,6 +384,7 @@ export default class Plot extends Component<Props, State> {
     let recoveredPercent = (this.props.recoveredPerDay[this.props.recoveredPerDay.length - 1] / this.props.population * 100).toFixed(2);
     let deadPercent = (this.props.deadPerDay[this.props.deadPerDay.length - 1] / this.props.population * 100).toFixed(2);
     let healthyPercent = (this.props.healthyPerDay[this.props.healthyPerDay.length - 1] / this.props.population * 100).toFixed(2);
+    let isolatePercent = (this.props.isolatePerDay[this.props.isolatePerDay.length - 1] / this.props.population * 100).toFixed(2);
 
     if (isNaN(infectedPercent)) {
       infectedPercent = 0;
@@ -415,7 +418,7 @@ export default class Plot extends Component<Props, State> {
     let infectedMaxDay = this.props.infectedPerDay.length ? this.props.infectedPerDay.indexOf( infectedMax ) : 0;
 
     let infectedMaxCB = <span><NodeLegend type="infectedMax"/> &nbsp;Максимум инфицированных: {infectedMax} ({infectedMaxDay} день)</span>;
-
+    let isolateCB = <span><NodeLegend type="isolating"/> &nbsp;Самоизолированные: {isolatePercent}% ({this.props.isolatePerDay[this.props.isolatePerDay.length - 1]} человек)</span>;
 
     let widthToUse = this.width;
     if (widthToUse === null) {
@@ -430,6 +433,7 @@ export default class Plot extends Component<Props, State> {
     let countRec = this.props.recoveredPerDay.length ? this.props.recoveredPerDay[this.props.recoveredPerDay.length - 1] : 0;
     let countDed = this.props.deadPerDay.length ? this.props.deadPerDay[this.props.deadPerDay.length - 1] : 0;
     let countHel = this.props.healthyPerDay.length ? this.props.healthyPerDay[this.props.healthyPerDay.length - 1] : 0;
+    let countIso = this.props.isolatePerDay.length ? this.props.isolatePerDay[this.props.isolatePerDay.length - 1] : 0;
 
     let data = [
         {
@@ -463,6 +467,14 @@ export default class Plot extends Component<Props, State> {
           name: 'Не болевшие ' + countHel.toString(),
           mode: 'lines+markers',
           marker: {color: 'green'},
+        },
+        {
+          x: Array.apply(null, {length: this.props.isolatePerDay.length}).map(Number.call, Number),
+          y: this.props.isolatePerDay,
+          type: 'scatter',
+          name: 'Самоизолированные ' + countIso.toString(),
+          mode: 'lines+markers',
+          marker: {color: 'blue'},
         },
       ];
       
@@ -517,6 +529,7 @@ export default class Plot extends Component<Props, State> {
             <div>{deadCB}</div>
             <div>{healthyCB}</div>
             <div>{infectedMaxCB}</div>
+            <div>{isolateCB}</div>
           </div>
 
           <div style={{'margin-top': '50px'}}>
