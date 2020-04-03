@@ -103,7 +103,7 @@ type State = {
   deadPerDay: number[],
   infectedPerDay: number[],
   recoveredPerDay: number[],
-    healthyPerDay: number[],
+  healthyPerDay: number[],
 }
 
 export default class Grid extends Component<Props, State> {
@@ -319,6 +319,7 @@ export default class Grid extends Component<Props, State> {
   resetPlotVariables() {
     this.state.capacityPerDay = [];
     this.state.deadPerDay = [];
+    this.state.healthyPerDay = [];
     this.state.infectedPerDay = [];
     this.state.recoveredPerDay = [];
   }
@@ -343,10 +344,15 @@ export default class Grid extends Component<Props, State> {
       this.state.deadPerDay.push(null);
       this.state.infectedPerDay.push(null);
       this.state.recoveredPerDay.push(null);
+      this.state.healthyPerDay.push(this.props.gridRows * this.props.gridRows - 
+        this.state.deadPerDay[this.state.deadPerDay.length -1] -
+        this.state.infectedPerDay[this.state.infectedPerDay.length -1] -
+        this.state.recoveredPerDay[this.state.recoveredPerDay.length-1]);
     }
     if (this.state.infectedPerDay.length === 0 || this.state.infectedPerDay[this.state.infectedPerDay.length-1] === null) {
       this.state.capacityPerDay.push(this.state.hospitalCapacityPct * this.props.gridRows * this.props.gridRows);
       this.state.deadPerDay.push(0);
+      this.state.healthyPerDay.push(this.props.gridRows * this.props.gridRows);
       this.state.infectedPerDay.push(this.props.nug);
       this.state.recoveredPerDay.push(0);
     }
@@ -515,6 +521,7 @@ export default class Grid extends Component<Props, State> {
 
     this.state.capacityPerDay.push(this.state.hospitalCapacityPct * population);
     this.state.deadPerDay.push(actualDeadNodes);
+    this.state.healthyPerDay.push(population - ( actualRecoveredNodes + actualInfectedNodes + actualDeadNodes ));
     this.state.infectedPerDay.push(actualInfectedNodes);
     this.state.recoveredPerDay.push(actualRecoveredNodes);
      // this.state.hea  .push( population - ( actualRecoveredNodes + actualInfectedNodes + actualDeadNodes ) );
@@ -1008,6 +1015,7 @@ export default class Grid extends Component<Props, State> {
       plot = <Plot hospitalCapacity={this.state.hospitalCapacityPct * population}
                    capacityPerDay={this.state.capacityPerDay}
                    deadPerDay={this.state.deadPerDay}
+                   healthyPerDay={this.state.healthyPerDay}
                    infectedPerDay={this.state.infectedPerDay}
                    population={population}
                    recoveredPerDay={this.state.recoveredPerDay}

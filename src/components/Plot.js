@@ -13,6 +13,7 @@ type Props = {
   hospitalCapacity: number,
   capacityPerDay: number[],
   deadPerDay: number[],
+  healthyPerDay: number[],
   infectedPerDay: number[],
   population: number,
   recoveredPerDay: number[],
@@ -379,6 +380,7 @@ export default class Plot extends Component<Props, State> {
     let infectedPercent = Math.round(this.props.infectedPerDay[this.props.infectedPerDay.length - 1] / this.props.population * 100);
     let recoveredPercent = Math.round(this.props.recoveredPerDay[this.props.recoveredPerDay.length - 1] / this.props.population * 100);
     let deadPercent = Math.round(this.props.deadPerDay[this.props.deadPerDay.length - 1] / this.props.population * 100);
+    let healthyPercent = Math.round(this.props.healthyPerDay[this.props.healthyPerDay.length - 1] / this.props.population * 100);
 
     if (isNaN(infectedPercent)) {
       infectedPercent = 0;
@@ -401,6 +403,7 @@ export default class Plot extends Component<Props, State> {
       // deadCB = <label><input type="checkbox" checked={this.state.showDead} onChange={(e) => this.setState({showDead: e.target.checked})}/> Dead: {deadPercent}%</label>
       deadCB = <span><NodeLegend type="dead"/> <span style={{backgroundColor: '#FFA'}}>&nbsp;Погибшие: {deadPercent}%&nbsp;</span></span>
     }
+    let healthyCB = <span><NodeLegend type="healthy"/> &nbsp;Здоровые: {healthyPercent}%</span>
 
     let widthToUse = this.width;
     if (widthToUse === null) {
@@ -414,6 +417,7 @@ export default class Plot extends Component<Props, State> {
     let countInf = this.props.infectedPerDay.length ? this.props.infectedPerDay[this.props.infectedPerDay.length - 1] : 0;
     let countRec = this.props.recoveredPerDay.length ? this.props.recoveredPerDay[this.props.recoveredPerDay.length - 1] : 0;
     let countDed = this.props.deadPerDay.length ? this.props.deadPerDay[this.props.deadPerDay.length - 1] : 0;
+    let countHel = this.props.healthyPerDay.length ? this.props.healthyPerDay[this.props.healthyPerDay.length - 1] : 0;
 
     let state = { data: [
         {
@@ -440,6 +444,14 @@ export default class Plot extends Component<Props, State> {
           mode: 'lines+markers',
           marker: {color: 'black'},
         },
+        {
+          x: Array.apply(null, {length: this.props.healthyPerDay.length}).map(Number.call, Number),
+          y: this.props.healthyPerDay,
+          type: 'scatter',
+          name: 'Здоровые ' + countHel.toString(),
+          mode: 'lines+markers',
+          marker: {color: 'green'},
+        },
       ], layout: {width: 920, height: 480, title: 'График'},
     };
 
@@ -459,6 +471,7 @@ export default class Plot extends Component<Props, State> {
               <div>{infectedCB}</div>
               <div>{recoveredCB}</div>
               <div>{deadCB}</div>
+              <div>{healthyCB}</div>
             </div>
           </div>
         </div>
