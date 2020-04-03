@@ -406,7 +406,9 @@ export default class Plot extends Component<Props, State> {
     let healthyCB = <span><NodeLegend type="healthy"/> &nbsp;Здоровые: {healthyPercent}%</span>;
 
     let infectedMax = Math.max(...this.props.infectedPerDay);
-    let infectedMaxCB = <span><NodeLegend type="infectedMax"/> &nbsp;Максимум инфицированных: {infectedMax}</span>;
+    let infectedMaxDay = this.props.infectedPerDay.indexOf( infectedMax )
+
+    let infectedMaxCB = <span><NodeLegend type="infectedMax"/> &nbsp;Максимум инфицированных: {infectedMax} ({infectedMaxDay} день)</span>;
 
 
     let widthToUse = this.width;
