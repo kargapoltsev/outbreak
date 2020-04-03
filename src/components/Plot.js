@@ -403,7 +403,13 @@ export default class Plot extends Component<Props, State> {
       // deadCB = <label><input type="checkbox" checked={this.state.showDead} onChange={(e) => this.setState({showDead: e.target.checked})}/> Dead: {deadPercent}%</label>
       deadCB = <span><NodeLegend type="dead"/> <span style={{backgroundColor: '#FFA'}}>&nbsp;Погибшие: {deadPercent}%&nbsp;</span></span>
     }
-    let healthyCB = <span><NodeLegend type="healthy"/> &nbsp;Здоровые: {healthyPercent}%</span>
+    let healthyCB = <span><NodeLegend type="healthy"/> &nbsp;Здоровые: {healthyPercent}%</span>;
+
+    let infectedMax = Math.max(...this.props.infectedPerDay);
+    let infectedMaxDay = this.props.infectedPerDay.indexOf( infectedMax )
+
+    let infectedMaxCB = <span><NodeLegend type="infectedMax"/> &nbsp;Максимум инфицированных: {infectedMax} ({infectedMaxDay} день)</span>;
+
 
     let widthToUse = this.width;
     if (widthToUse === null) {
@@ -487,7 +493,7 @@ export default class Plot extends Component<Props, State> {
           <div>{infectedCB}</div>
           <div>{recoveredCB}</div>
           <div>{deadCB}</div>
-          <div>{healthyCB}</div>
+          <div>{infectedMaxCB}</div>
         </div>
       </div>
     )
