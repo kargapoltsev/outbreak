@@ -426,7 +426,7 @@ export default class Plot extends Component<Props, State> {
     let countDed = this.props.deadPerDay.length ? this.props.deadPerDay[this.props.deadPerDay.length - 1] : 0;
     let countHel = this.props.healthyPerDay.length ? this.props.healthyPerDay[this.props.healthyPerDay.length - 1] : 0;
 
-    let state = { data: [
+    let data = [
         {
           x: Array.apply(null, {length: this.props.infectedPerDay.length}).map(Number.call, Number),
           y: this.props.infectedPerDay,
@@ -459,13 +459,32 @@ export default class Plot extends Component<Props, State> {
           mode: 'lines+markers',
           marker: {color: 'green'},
         },
-      ], layout: {width: 920, height: 480, title: 'График'},
-    };
+      ];
+      
+      let layout =  {        
+          width: 920, height: 480, title: 'График',
+          xaxis: {
+            title: 'Время, дни',
+            titlefont: {
+            family: 'Courier New, monospace',
+            size: 18,
+            color: '#7f7f7f'
+            },
+          },
+          yaxis: {
+            title: 'Численость населения, агенты',
+            titlefont: {
+            family: 'Courier New, monospace',
+            size: 18,
+            color: '#7f7f7f'
+            },
+          }
+      };
 
     return (
       <div>
         <div className="plot-container">
-          {/*<div className="plot-yaxis">population</div>*/}
+          {/*<div className="plot-yaxis"><b>Численость, агенты ⟶</b></div>*/}
           <div className="plot-xaxis">Время, дни ⟶</div>
           <div className="plot-chart">
             <canvas ref={this.canvasRef} width={widthToUse} height={this.height} />
@@ -486,8 +505,8 @@ export default class Plot extends Component<Props, State> {
 
 
           <PlotLib
-              data={state.data}
-              layout={state.layout}
+              data={data}
+              layout={layout}
           />
 
         <div style={{display: 'flex', flexDirection: 'column'}}>
