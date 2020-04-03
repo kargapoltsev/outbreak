@@ -777,14 +777,16 @@ export default class Grid extends Component<Props, State> {
 
   // noinspection JSMethodCanBeStatic,JSUnusedLocalSymbols
   renderSlider(name: string, value: number, onChange: Function, min: number, max: number, step: number,
-               renderPercentage: boolean, highlighted: boolean) {
+               renderPercentage: boolean, highlighted: boolean, isInteger: Boolean) {
     let valueStr;
     if (renderPercentage === 0) {
       valueStr = "";
     } else if (renderPercentage) {
       valueStr = <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{Grid.renderPercentage(value)}</span>;
-    } else {
+    } else if (isInteger) {
       valueStr = <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>{Math.round(value*100)/100}</strong></span>;
+    } else {
+      valueStr = <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>{value.toFixed(3)}</strong></span>;
     }
 
     let highlightedClass = "";
@@ -833,7 +835,7 @@ export default class Grid extends Component<Props, State> {
       transmissionProbabilitySlider =
           this.renderSlider("Вероятность заражения, доли", this.state.transmissionProbability,
               (e, value) => { this.setState({transmissionProbability: value}); },
-              0, this.props.maxTransmissionRate, 0.01, false, this.props.highlight === "transmissionRate");
+              0, this.props.maxTransmissionRate, 0.01, false, this.props.highlight === "transmissionRate", false);
     }
 
     let immunityFractionSlider = null;
@@ -856,7 +858,7 @@ export default class Grid extends Component<Props, State> {
       hospitalCapacitySlider =
           this.renderSlider("Вместимость стационара, доли", this.state.hospitalCapacityPct,
               (e, value) => { this.setState({hospitalCapacityPct: value}); },
-              0, 1, 0.01, false, false);
+              0, 1, 0.001, false, false,false);
 
     }
 
@@ -865,7 +867,7 @@ export default class Grid extends Component<Props, State> {
       travelRadiusSlider =
           this.renderSlider("Размер круга общения (Чем выше, тем вероятнее встреча с малознакомыми людьми)", this.state.travelRadius,
               (e, value) => { this.setState({travelRadius: value}); },
-              0, Math.min(100, Math.floor(this.props.gridRows/2)), 1, false, false);
+              0, Math.min(100, Math.floor(this.props.gridRows/2)), 1, false, false, true);
     }
 
     let personHoursSlider = null;
@@ -873,7 +875,7 @@ export default class Grid extends Component<Props, State> {
       personHoursSlider =
           this.renderSlider("Количество взаимодействий в день", this.state.personHours,
               (e, value) => { this.setState({personHours: value}); },
-              1, 30, 1, false, false);
+              1, 30, 1, false, false, true);
     }
 
     let daysIncubatingSlider = null;
@@ -881,7 +883,7 @@ export default class Grid extends Component<Props, State> {
       daysIncubatingSlider =
           this.renderSlider("Длительность инкубационного периода, дни", this.state.daysIncubating,
               (e, value) => { this.setState({daysIncubating: value}); },
-              0, 20, 1, false, false);
+              0, 20, 1, false, false, true);
     }
 
     let daysSymptomaticSlider = null;
@@ -889,7 +891,7 @@ export default class Grid extends Component<Props, State> {
       daysSymptomaticSlider =
           this.renderSlider("Длительность болезни (симптомов), дни", this.state.daysSymptomatic,
               (e, value) => { this.setState({daysSymptomatic: value}); },
-              1, 20, 1, false, false);
+              1, 20, 1, false, false, true);
     }
 
     let chanceOfIsolationAfterSymptomsSlider = null;
@@ -897,7 +899,7 @@ export default class Grid extends Component<Props, State> {
       chanceOfIsolationAfterSymptomsSlider =
           this.renderSlider("Уровень самоизоляции, доли", this.state.chanceOfIsolationAfterSymptoms,
               (e, value) => { this.setState({chanceOfIsolationAfterSymptoms: value}); },
-              0, 1, 0.01, false, false);
+              0, 1, 0.01, false, false, false);
     }
 
     let decreaseInEncountersAfterSymptomsSlider = null;
@@ -905,7 +907,7 @@ export default class Grid extends Component<Props, State> {
       decreaseInEncountersAfterSymptomsSlider =
           this.renderSlider("Уровень соблюдения самоизоляции, доли (При 1 пациенты имеют 0 встреч с другими людьми)", this.state.decreaseInEncountersAfterSymptoms,
               (e, value) => { this.setState({decreaseInEncountersAfterSymptoms: value}); },
-              0, 1, 0.01, false, false);
+              0, 1, 0.01, false, false, false);
     }
 
     let deathRateSlider = null;
@@ -918,7 +920,7 @@ export default class Grid extends Component<Props, State> {
       deathRateSlider =
           this.renderSlider(sliderName, this.state.deathRate,
               (e, value) => { this.setState({deathRate: value}); },
-              0, 1, 0.01, false, false);
+              0, 1, 0.01, false, false, false);
     }
 
     // let speedSlider = null;
