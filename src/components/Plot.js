@@ -460,22 +460,22 @@ export default class Plot extends Component<Props, State> {
           mode: 'lines+markers',
           marker: {color: 'black'},
         },
-        {
-          x: Array.apply(null, {length: this.props.healthyPerDay.length}).map(Number.call, Number),
-          y: this.props.healthyPerDay,
-          type: 'scatter',
-          name: 'Не болевшие ' + countHel.toString(),
-          mode: 'lines+markers',
-          marker: {color: 'green'},
-        },
-        {
-          x: Array.apply(null, {length: this.props.isolatePerDay.length}).map(Number.call, Number),
-          y: this.props.isolatePerDay,
-          type: 'scatter',
-          name: 'Самоизолированные ' + countIso.toString(),
-          mode: 'lines+markers',
-          marker: {color: 'blue'},
-        },
+        // {
+        //   x: Array.apply(null, {length: this.props.healthyPerDay.length}).map(Number.call, Number),
+        //   y: this.props.healthyPerDay,
+        //   type: 'scatter',
+        //   name: 'Не болевшие ' + countHel.toString(),
+        //   mode: 'lines+markers',
+        //   marker: {color: 'green'},
+        // },
+        // {
+        //   x: Array.apply(null, {length: this.props.isolatePerDay.length}).map(Number.call, Number),
+        //   y: this.props.isolatePerDay,
+        //   type: 'scatter',
+        //   name: 'Самоизолированные ' + countIso.toString(),
+        //   mode: 'lines+markers',
+        //   marker: {color: 'blue'},
+        // },
       ];
       
       let layout =  {        

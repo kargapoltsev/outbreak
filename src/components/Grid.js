@@ -25,6 +25,7 @@ type Props = {
   addLinkedNodes: boolean,
   gridCols?: number,
   gridRows?: number,
+  populationSize: number,
 
   // Simulation parameters
   daysIncubating?: number,
@@ -125,6 +126,7 @@ export default class Grid extends Component<Props, State> {
     addLinkedNodes: false,
     gridCols: 1,
     gridRows: 1,
+    populationSize: 100000,
 
     // Simulation parameters
     daysIncubating: 14,
@@ -196,15 +198,15 @@ export default class Grid extends Component<Props, State> {
   }
 
   updateWindowDimensions() {
-    let idealWidth = this.props.gridCols * this.props.nodeSize;
-    if (this.props.nodeSize >= 5) {
-      idealWidth += this.props.gridCols;
+    let idealWidth = this.state.gridCols * this.state.nodeSize;
+    if (this.state.nodeSize >= 5) {
+      idealWidth += this.state.gridCols;
     }
 
     let gridWidth = Math.min(idealWidth, document.documentElement.clientWidth - 40);
-    let nodeSize = Math.floor(gridWidth / this.props.gridCols);
+    let nodeSize = Math.floor(gridWidth / this.state.gridCols);
 
-    gridWidth = nodeSize * this.props.gridCols;
+    gridWidth = nodeSize * this.state.gridCols;
 
     if (this.gridWidth !== gridWidth || this.nodeSize !== nodeSize) {
       this.gridWidth = gridWidth;
@@ -218,14 +220,7 @@ export default class Grid extends Component<Props, State> {
   }
 
   initializeFromProps(props: Props, fromConstructor: boolean) {
-    this.gridWidth = props.gridCols * props.nodeSize;
-    this.nodeSize = props.nodeSize;
 
-    let randomSeed = props.randomSeed;
-    if (randomSeed === -1) {
-      randomSeed = Math.floor(Math.random() * 3000000);
-    }
-    this.rng = new RNG(randomSeed);
 
     let state = {
       numActiveNodes: 0,
@@ -233,6 +228,11 @@ export default class Grid extends Component<Props, State> {
       visible: false,
 
       // Network
+      gridCols: props.gridCols,
+      gridRows: props.gridRows,
+      populationSize: props.populationSize,
+      nodeSize: props.nodeSize,
+
 
       // Simulation
       daysIncubating: props.daysIncubating,
@@ -263,6 +263,17 @@ export default class Grid extends Component<Props, State> {
       healthyPerDay: [],
       isolatePerDay: [],
     };
+
+    this.gridWidth = state.gridCols * state.nodeSize;
+    this.nodeSize = state.nodeSize;
+
+    let randomSeed = props.randomSeed;
+    if (randomSeed === -1) {
+      randomSeed = Math.floor(Math.random() * 3000000);
+    }
+    this.rng = new RNG(randomSeed);
+
+
     if (fromConstructor) {
       this.state = state;
     } else {
@@ -350,15 +361,15 @@ export default class Grid extends Component<Props, State> {
       this.state.infectedPerDay.push(null);
       this.state.recoveredPerDay.push(null);
       this.state.isolatePerDay.push(null);
-      this.state.healthyPerDay.push(this.props.gridRows * this.props.gridRows - 
+      this.state.healthyPerDay.push(this.state.gridRows * this.state.gridCols -
         this.state.deadPerDay[this.state.deadPerDay.length -1] -
         this.state.infectedPerDay[this.state.infectedPerDay.length -1] -
         this.state.recoveredPerDay[this.state.recoveredPerDay.length-1]);
     }
     if (this.state.infectedPerDay.length === 0 || this.state.infectedPerDay[this.state.infectedPerDay.length-1] === null) {
-      this.state.capacityPerDay.push(this.state.hospitalCapacityPct * this.props.gridRows * this.props.gridRows);
+      this.state.capacityPerDay.push(this.state.hospitalCapacityPct * this.props.gridRows * this.props.gridCols);
       this.state.deadPerDay.push(0);
-      this.state.healthyPerDay.push(this.props.gridRows * this.props.gridRows);
+      this.state.healthyPerDay.push(this.state.gridRows * this.state.gridCols);
       this.state.infectedPerDay.push(this.props.nug);
       this.state.recoveredPerDay.push(0);
       this.state.isolatePerDay.push(0);
@@ -366,8 +377,8 @@ export default class Grid extends Component<Props, State> {
 
     this.state.centerNodeNeighborsToDisplay = [];
 
-    let nRows = this.props.gridRows;
-    let nCols = this.props.gridCols;
+    let nRows = this.state.gridRows;
+    let nCols = this.state.gridCols;
 
     // Initialize grid
     this.grid = [];
@@ -455,8 +466,8 @@ export default class Grid extends Component<Props, State> {
   }
 
   simulateStep() {
-    let nRows = this.props.gridRows;
-    let nCols = this.props.gridCols;
+    let nRows = this.state.gridRows;
+    let nCols = this.state.gridCols;
 
     // let actualRemovedCells = 0;
     let linkedNodes: Set<GridNode> = new Set();
@@ -527,7 +538,7 @@ export default class Grid extends Component<Props, State> {
       }
     }
 
-    let population = this.props.gridRows * this.props.gridRows;
+    let population = this.state.gridRows * this.state.gridCols;
 
     this.state.capacityPerDay.push(this.state.hospitalCapacityPct * population);
     this.state.deadPerDay.push(actualDeadNodes);
@@ -549,7 +560,7 @@ export default class Grid extends Component<Props, State> {
   }
 
   isCenterNode(r: number, c: number): boolean {
-    return r === Math.floor(this.props.gridRows / 2) && c === Math.floor(this.props.gridCols / 2);
+    return r === Math.floor(this.state.gridRows / 2) && c === Math.floor(this.state.gridCols / 2);
   }
 
   maybeInfect(node: GridNode, r: number, c: number, linkedNodes: Set<GridNode>): GridNode[] {
@@ -695,8 +706,8 @@ export default class Grid extends Component<Props, State> {
     //     this.state.centerNodeNeighborsToDisplay &&
     //     this.state.centerNodeNeighborsToDisplay.length > 0) {
     if (this.props.showInteractions && (interactionsParamsChanged || this.inInitialPosition())) {
-      let centerR = Math.floor(this.props.gridRows / 2);
-      let centerC = Math.floor(this.props.gridCols / 2);
+      let centerR = Math.floor(this.state.gridRows / 2);
+      let centerC = Math.floor(this.state.gridCols / 2);
 
       let centerNode = this.grid[centerR][centerC];
 
@@ -899,12 +910,34 @@ export default class Grid extends Component<Props, State> {
 
     }
 
+    let populationSlider = null;
+    if ( true ) {
+      populationSlider =
+          this.renderSlider( "Численность населения", this.state.populationSize,
+              (e, value) => {
+                this.setState({populationSize: value});
+
+                let worldSideSize = Math.round( Math.sqrt( value ) );
+
+                this.setState({gridRows: worldSideSize});
+                this.setState({gridCols: worldSideSize});
+
+                // this.regenerate();
+
+                this.generate( true );
+                this.forceUpdate();
+
+              },
+              1000, 1000000, 1, false, false, true);
+    }
+
+
     let travelRadiusSlider = null;
     if (showAll || this.props.showTravelRadiusSlider) {
       travelRadiusSlider =
           this.renderSlider(Translation.TRAVEL_RADIUS, this.state.travelRadius,
               (e, value) => { this.setState({travelRadius: value}); },
-              0, Math.min(100, Math.floor(this.props.gridRows/2)), 1, false, false, true);
+              0, Math.min(100, Math.floor(this.state.gridRows/2)), 1, false, false, true);
     }
 
     let personHoursSlider = null;
@@ -1041,7 +1074,7 @@ export default class Grid extends Component<Props, State> {
 
     let plot = null;
     if (this.props.showAliveFraction) {
-      let population = this.props.gridRows * this.props.gridRows;
+      let population = this.state.gridRows * this.state.gridCols;
       plot = <Plot hospitalCapacity={this.state.hospitalCapacityPct * population}
                    capacityPerDay={this.state.capacityPerDay}
                    deadPerDay={this.state.deadPerDay}
@@ -1056,31 +1089,6 @@ export default class Grid extends Component<Props, State> {
 
 
     }
-
-    // let plotLib = <Plot
-    //     data={[
-    //       {
-    //         x: [1, 2, 3],
-    //         y: [2, 6, 3],
-    //         type: 'scatter',
-    //         mode: 'lines+markers',
-    //         marker: {color: 'red'},
-    //       },
-    //     ]}
-    //     layout={ {width: 320, height: 240, title: 'A Fancy Plot'} }
-    // />;
-
-    // let state = { data: [
-    //     {
-    //       x: [0,1,2,3,4,5,6,7,8,9,10],
-    //       y: this.props.infectedPerDay,
-    //       type: 'scatter',
-    //       mode: 'lines+markers',
-    //       marker: {color: 'red'},
-    //     },
-    //
-    //   ], layout: {width: 620, height: 480, title: 'График'},
-    // };
 
     return (
         <div className="widget-container" style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
@@ -1107,6 +1115,8 @@ export default class Grid extends Component<Props, State> {
             </div>
 
           </div>
+
+          {populationSlider}
 
           {highlightedSlider}
 
