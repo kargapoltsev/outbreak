@@ -476,10 +476,10 @@ export default class Grid extends Component<Props, State> {
     for (let r = 0; r < nRows; r++) {
       for (let c = 0; c < nCols; c++) {
         let node = this.grid[r][c];
-        node.startDay();
-        if (this.state.longDistaceNetworkActive && node.linked) {
-          linkedNodes.add(node);
-        }
+          node.startDay();
+          if (this.state.longDistaceNetworkActive && node.linked) {
+            linkedNodes.add(node);
+          }
       }
     }
 
@@ -803,8 +803,35 @@ export default class Grid extends Component<Props, State> {
     return <span><strong>{percent}</strong>%</span>;
   }
 
+  onClickUpdateWorld()
+  {
+    let worldSideSize = Math.round( Math.sqrt( this.state.populationSize ) );
+
+    this.setState({gridRows: worldSideSize});
+    this.setState({gridCols: worldSideSize});
+
+    this.state.gridRows =  worldSideSize;
+    this.state.gridCols =  worldSideSize;
+
+    if ( this.state.populationSize < 100000 )
+    {
+      this.state.nodeSize = 3;
+    }
+    else if ( this.state.populationSize > 100000 ) {
+      this.state.nodeSize = 2;
+    }
+    else if ( this.state.populationSize > 500000 ) {
+      this.state.nodeSize = 1;
+    }
+
+    this.updateWindowDimensions();
+    this.generate( true );
+    this.forceUpdate()
+  }
+
+
   // noinspection JSMethodCanBeStatic,JSUnusedLocalSymbols
-  renderSlider(name: string, value: number, onChange: Function, min: number, max: number, step: number,
+  renderSlider(name: string, value: number, onChange: Function, onChange2: Function, min: number, max: number, step: number,
                renderPercentage: boolean, highlighted: boolean, isInteger: Boolean) {
     let valueStr;
     if (renderPercentage === 0) {
@@ -820,6 +847,15 @@ export default class Grid extends Component<Props, State> {
     let highlightedClass = "";
     if (highlighted) {
       highlightedClass = " highlighted"
+    }
+
+    let applyButton =  null;
+
+    if (onChange2)
+    {
+      applyButton = <div className="slider-plus">
+        <WidgetButton size="small" onClick={() => onChange2(null, value) }><span className="plus-minus-button">+</span></WidgetButton>
+      </div>;
     }
 
     return (
@@ -842,12 +878,15 @@ export default class Grid extends Component<Props, State> {
                   value={value}
                   onChange={onChange}/>
         </div>
-        <div className="slider-minus">
-          <WidgetButton size="small" onClick={() => onChange(null, Math.max(value - step, min))}><span className="plus-minus-button">–</span></WidgetButton>
-        </div>
-        <div className="slider-plus">
-          <WidgetButton size="small" onClick={() => onChange(null, Math.min(value + step, max))}><span className="plus-minus-button">+</span></WidgetButton>
-        </div>
+        {/*<div className="slider-minus">*/}
+        {/*  <WidgetButton size="small" onClick={() => onChange(null, Math.max(value - step, min))}><span className="plus-minus-button">–</span></WidgetButton>*/}
+        {/*</div>*/}
+        {/*<div className="slider-plus">*/}
+        {/*  <WidgetButton size="small" onClick={() => onChange(null, Math.min(value + step, max))}><span className="plus-minus-button">+</span></WidgetButton>*/}
+        {/*</div>*/}
+
+        {applyButton}
+
       </div>
     );
   }
@@ -906,6 +945,7 @@ export default class Grid extends Component<Props, State> {
                 this.setState({hospitalCapacityPct: percentage});
 
                 },
+              null,
               0, 5000, 1, false, false, true);
 
     }
@@ -915,27 +955,12 @@ export default class Grid extends Component<Props, State> {
       populationSlider =
           this.renderSlider( "Численность населения", this.state.populationSize,
               (e, value) => {
-
-
                 let worldSideSize = Math.round( Math.sqrt( value ) );
-
-                this.setState({gridRows: worldSideSize});
-                this.setState({gridCols: worldSideSize});
-
-                if ( value > 100000 )
-                  this.setState({nodeSize: 2});
-
-                if ( value > 500000 )
-                  this.setState({nodeSize: 1});
-
                 this.setState({populationSize: worldSideSize * worldSideSize});
 
-                // this.regenerate();
-
-                this.updateWindowDimensions();
-                this.generate( true );
-                this.forceUpdate();
-
+              },
+              (e, value) => {
+                this.onClickUpdateWorld();
               },
               1000, 1000000, 1, false, false, true);
     }
@@ -946,6 +971,7 @@ export default class Grid extends Component<Props, State> {
       travelRadiusSlider =
           this.renderSlider(Translation.TRAVEL_RADIUS, this.state.travelRadius,
               (e, value) => { this.setState({travelRadius: value}); },
+              null,
               0, Math.min(100, Math.floor(this.state.gridRows/2)), 1, false, false, true);
     }
 
@@ -954,6 +980,7 @@ export default class Grid extends Component<Props, State> {
       personHoursSlider =
           this.renderSlider(Translation.ENCOUNTERS_PER_DAY, this.state.personHours,
               (e, value) => { this.setState({personHours: value}); },
+              null,
               1, 30, 1, false, false, true);
     }
 
@@ -962,6 +989,7 @@ export default class Grid extends Component<Props, State> {
       daysIncubatingSlider =
           this.renderSlider(Translation.DAYS_IN_INCUBATION, this.state.daysIncubating,
               (e, value) => { this.setState({daysIncubating: value}); },
+              null,
               0, 20, 1, false, false, true);
     }
 
@@ -970,6 +998,7 @@ export default class Grid extends Component<Props, State> {
       daysSymptomaticSlider =
           this.renderSlider(Translation.DAYS_WITH_SYMPTOMS, this.state.daysSymptomatic,
               (e, value) => { this.setState({daysSymptomatic: value}); },
+              null,
               1, 20, 1, false, false, true);
     }
 
@@ -978,6 +1007,7 @@ export default class Grid extends Component<Props, State> {
       chanceOfIsolationAfterSymptomsSlider =
           this.renderSlider(Translation.SELF_QUARANTINE_RATE, this.state.chanceOfIsolationAfterSymptoms,
               (e, value) => { this.setState({chanceOfIsolationAfterSymptoms: value}); },
+              null,
               0, 1, 0.01, false, false, false);
     }
 
@@ -986,6 +1016,7 @@ export default class Grid extends Component<Props, State> {
       decreaseInEncountersAfterSymptomsSlider =
           this.renderSlider(Translation.SELF_QUARANTINE_STRICTNESS, this.state.decreaseInEncountersAfterSymptoms,
               (e, value) => { this.setState({decreaseInEncountersAfterSymptoms: value}); },
+              null,
               0, 1, 0.01, false, false, false);
     }
 
@@ -999,6 +1030,7 @@ export default class Grid extends Component<Props, State> {
       deathRateSlider =
           this.renderSlider(sliderName, this.state.deathRate,
               (e, value) => { this.setState({deathRate: value}); },
+              null,
               0, 1, 0.01, false, false, false);
     }
 
