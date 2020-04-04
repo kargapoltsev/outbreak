@@ -99,21 +99,9 @@ class App extends Component<Props, State> {
   render() {
     return (
       <div className="main-container">
-        <div className="content_top">
-          <ul>
-            <ul class="hl">
-              <li><NodeLegend type="susceptible"/> &nbsp;<b>Восприимчив</b></li>
-              < li><NodeLegend type="exposed"/> &nbsp;<b>Инфицирован (инкубационный период)</b></li>            
-            </ul>
-            <ul class="hl">
-              <li><NodeLegend type="infected"/> &nbsp;<b>Инфицирован (с симптомами)</b></li>
-              <li><NodeLegend type="removed"/> &nbsp;<b>Выздоровел</b></li>
-            </ul>
-            <ul class="hl">
-              <li><NodeLegend type="isolating"/> &nbsp;<b>Самоизоляция</b></li>
-            </ul>
-          </ul>          
-        </div>
+        {/*<div className="content_top">*/}
+
+        {/*</div>*/}
         <div className="content">
           {this.renderMainPost()}
         </div>

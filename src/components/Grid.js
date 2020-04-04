@@ -15,6 +15,7 @@ import Constants from "./Constants";
 
 import PlotLib from 'react-plotly.js';
 import Translation from "../translation/rus";
+import NodeLegend from "./NodeLegend";
 
 
 type Props = {
@@ -1142,43 +1143,55 @@ export default class Grid extends Component<Props, State> {
           {/*{playbackControls}*/}
 
 
-          <div style={{width: "100&", position: "relative", "min-height": "1150px", "z-index":"10"}}>
-            <div style={{width: "540px", position: "absolute", left: "-950px"}}>
-              <Waypoint onEnter={this.onEnter} onLeave={this.onLeave} scrollableAncestor={window}>
-                <canvas ref={this.canvasRef} width={this.gridWidth} height={this.gridWidth} />
-              </Waypoint>
-              {percentAliveSlider}
+          <div style={{width: "100&", position: "relative", "min-height": "750px", "z-index":"10"}}>
+            <div style={{width: "540px", position: "absolute", left: "250px"}}>
+              {populationSlider}
+              {highlightedSlider}
+              {hospitalCapacitySlider}
+              {deathRateSlider}
+              {chanceOfIsolationAfterSymptomsSlider}
+              {decreaseInEncountersAfterSymptomsSlider}
+              {personHoursSlider}
+              {travelRadiusSlider}
+              {transmissionProbabilitySlider}
+              {immunityFractionSlider}
+              {daysIncubatingSlider}
+              {daysSymptomaticSlider}
+              {toggleLongDistanceNetwork}
+              {protip}
 
+              <div style={{'margin-top': '20px'}}>
+                {playbackControls}
+              </div>
             </div>
-            <div style={{width: "540px", position: "absolute", left: "20px"}}>
-              {playbackControls}
+            <div style={{width: "540px", position: "absolute", left: "-800px"}}>
               {plot}
             </div>
 
           </div>
 
           <div style={{position: "relative", "z-index":"100"}}>
-            {populationSlider}
 
-            {highlightedSlider}
+            <Waypoint onEnter={this.onEnter} onLeave={this.onLeave} scrollableAncestor={window}>
+              <canvas ref={this.canvasRef} width={this.gridWidth} height={this.gridWidth} />
+            </Waypoint>
+            {percentAliveSlider}
 
-            {hospitalCapacitySlider}
-            {deathRateSlider}
-            {chanceOfIsolationAfterSymptomsSlider}
-            {decreaseInEncountersAfterSymptomsSlider}
+            <ul>
+              <ul className="hl">
+                <li><NodeLegend type="susceptible"/> &nbsp;<b>Восприимчив</b></li>
+                < li><NodeLegend type="exposed"/> &nbsp;<b>Инфицирован (инкубационный период)</b></li>
+              </ul>
+              <ul className="hl">
+                <li><NodeLegend type="infected"/> &nbsp;<b>Инфицирован (с симптомами)</b></li>
+                <li><NodeLegend type="removed"/> &nbsp;<b>Выздоровел</b></li>
+              </ul>
+              <ul className="hl">
+                <li><NodeLegend type="isolating"/> &nbsp;<b>Самоизоляция</b></li>
+              </ul>
+            </ul>
 
-            {personHoursSlider}
-            {travelRadiusSlider}
 
-            {transmissionProbabilitySlider}
-            {immunityFractionSlider}
-
-            {daysIncubatingSlider}
-            {daysSymptomaticSlider}
-
-            {toggleLongDistanceNetwork}
-
-            {protip}
           </div>
 
           {/*{speedSlider}*/}

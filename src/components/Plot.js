@@ -522,6 +522,10 @@ export default class Plot extends Component<Props, State> {
           {/*  </div>*/}
           {/*</div>*/}
 
+          <div style={{'margin-top': '0px'}}>
+            <WidgetButton onClick={() => {this.resetArrays()}}>{Translation.BUTTON_CLEAR}</WidgetButton>
+          </div>
+
           <PlotLib
               data={data}
               layout={layout}
@@ -536,9 +540,7 @@ export default class Plot extends Component<Props, State> {
             <div>{isolateCB}</div>
           </div>
 
-          <div style={{'margin-top': '50px'}}>
-            <WidgetButton onClick={() => {this.resetArrays()}}>{Translation.BUTTON_CLEAR}</WidgetButton>
-          </div>
+
 
 
         </div>
