@@ -395,10 +395,14 @@ export default class Plot extends Component<Props, State> {
     if (isNaN(deadPercent)) {
       deadPercent = 0;
     }
-
     if (isNaN(healthyPercent)) {
       healthyPercent = 0;
     }
+    if (isNaN(isolatePercent)) {
+      isolatePercent = 0;
+    }
+
+
 
     // let infectedCB = <label><input type="checkbox" checked={this.state.showInfected} onChange={(e) => this.setState({showInfected: e.target.checked})}/> Infected: {infectedPercent}%</label>
     let infectedCB = <span><NodeLegend type="infected"/> &nbsp;Инфицированные: {infectedPercent}% ({this.props.infectedPerDay[this.props.infectedPerDay.length - 1]} человек)</span>
@@ -468,14 +472,14 @@ export default class Plot extends Component<Props, State> {
         //   mode: 'lines+markers',
         //   marker: {color: 'green'},
         // },
-        // {
-        //   x: Array.apply(null, {length: this.props.isolatePerDay.length}).map(Number.call, Number),
-        //   y: this.props.isolatePerDay,
-        //   type: 'scatter',
-        //   name: 'Самоизолированные ' + countIso.toString(),
-        //   mode: 'lines+markers',
-        //   marker: {color: 'blue'},
-        // },
+        {
+          x: Array.apply(null, {length: this.props.isolatePerDay.length}).map(Number.call, Number),
+          y: this.props.isolatePerDay,
+          type: 'scatter',
+          name: 'Самоизолированные ' + countIso.toString(),
+          mode: 'lines+markers',
+          marker: {color: 'blue'},
+        },
       ];
       
       let layout =  {        

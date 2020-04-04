@@ -915,15 +915,24 @@ export default class Grid extends Component<Props, State> {
       populationSlider =
           this.renderSlider( "Численность населения", this.state.populationSize,
               (e, value) => {
-                this.setState({populationSize: value});
+
 
                 let worldSideSize = Math.round( Math.sqrt( value ) );
 
                 this.setState({gridRows: worldSideSize});
                 this.setState({gridCols: worldSideSize});
 
+                if ( value > 100000 )
+                  this.setState({nodeSize: 2});
+
+                if ( value > 500000 )
+                  this.setState({nodeSize: 1});
+
+                this.setState({populationSize: worldSideSize * worldSideSize});
+
                 // this.regenerate();
 
+                this.updateWindowDimensions();
                 this.generate( true );
                 this.forceUpdate();
 
@@ -1101,7 +1110,7 @@ export default class Grid extends Component<Props, State> {
           {/*{playbackControls}*/}
 
 
-          <div style={{width: "100&", position: "relative", "min-height": "1150px"}}>
+          <div style={{width: "100&", position: "relative", "min-height": "1150px", "z-index":"10"}}>
             <div style={{width: "540px", position: "absolute", left: "-950px"}}>
               <Waypoint onEnter={this.onEnter} onLeave={this.onLeave} scrollableAncestor={window}>
                 <canvas ref={this.canvasRef} width={this.gridWidth} height={this.gridWidth} />
@@ -1116,30 +1125,29 @@ export default class Grid extends Component<Props, State> {
 
           </div>
 
-          {populationSlider}
+          <div style={{position: "relative", "z-index":"100"}}>
+            {populationSlider}
 
-          {highlightedSlider}
+            {highlightedSlider}
 
-          {hospitalCapacitySlider}
-          {deathRateSlider}
-          {chanceOfIsolationAfterSymptomsSlider}
-          {decreaseInEncountersAfterSymptomsSlider}
+            {hospitalCapacitySlider}
+            {deathRateSlider}
+            {chanceOfIsolationAfterSymptomsSlider}
+            {decreaseInEncountersAfterSymptomsSlider}
 
-          {personHoursSlider}
-          {travelRadiusSlider}
+            {personHoursSlider}
+            {travelRadiusSlider}
 
-          {transmissionProbabilitySlider}
-          {immunityFractionSlider}
+            {transmissionProbabilitySlider}
+            {immunityFractionSlider}
 
-          {daysIncubatingSlider}
-          {daysSymptomaticSlider}
+            {daysIncubatingSlider}
+            {daysSymptomaticSlider}
 
-          {toggleLongDistanceNetwork}
+            {toggleLongDistanceNetwork}
 
-          {protip}
-
-
-
+            {protip}
+          </div>
 
           {/*{speedSlider}*/}
           <Interval milliseconds={intervalMillis} callback={this.onTick} />
