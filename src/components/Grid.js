@@ -1126,11 +1126,15 @@ export default class Grid extends Component<Props, State> {
                    recoveredPerDay={this.state.recoveredPerDay}
                    showDeaths={this.props.showDeaths}
                    isolatePerDay={this.state.isolatePerDay} />;
-
-
-
-
     }
+
+    let grid_legend = (              <ul class="hl">
+    <li><NodeLegend type="susceptible"/> &nbsp;<b>Восприимчив</b></li>
+    <li><NodeLegend type="exposed"/> &nbsp;<b>Инфицирован (инкубационный период)</b></li>   
+    <li><NodeLegend type="infected"/> &nbsp;<b>Инфицирован (с симптомами)</b></li>
+    <li><NodeLegend type="removed"/> &nbsp;<b>Выздоровел</b></li>     
+    <li><NodeLegend type="isolating"/> &nbsp;<b>Самоизоляция</b></li>
+  </ul>);
 
     return (
         <div className="widget-container" style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
@@ -1176,20 +1180,8 @@ export default class Grid extends Component<Props, State> {
               <canvas ref={this.canvasRef} width={this.gridWidth} height={this.gridWidth} />
             </Waypoint>
             {percentAliveSlider}
-
-            <ul>
-              <ul className="hl">
-                <li><NodeLegend type="susceptible"/> &nbsp;<b>Восприимчив</b></li>
-                < li><NodeLegend type="exposed"/> &nbsp;<b>Инфицирован (инкубационный период)</b></li>
-              </ul>
-              <ul className="hl">
-                <li><NodeLegend type="infected"/> &nbsp;<b>Инфицирован (с симптомами)</b></li>
-                <li><NodeLegend type="removed"/> &nbsp;<b>Выздоровел</b></li>
-              </ul>
-              <ul className="hl">
-                <li><NodeLegend type="isolating"/> &nbsp;<b>Самоизоляция</b></li>
-              </ul>
-            </ul>
+            {grid_legend}
+            
 
 
           </div>

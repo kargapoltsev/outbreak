@@ -1,9 +1,8 @@
 import React, { Component } from 'react'
 import './App.css'
 import Grid from "./components/Grid";
-import NodeLegend from "./components/NodeLegend";
 import Figure from "./components/Figure";
-import Translation from './translation/rus';
+
 
 type Props = {
 }
@@ -99,9 +98,6 @@ class App extends Component<Props, State> {
   render() {
     return (
       <div className="main-container">
-        {/*<div className="content_top">*/}
-
-        {/*</div>*/}
         <div className="content">
           {this.renderMainPost()}
         </div>
