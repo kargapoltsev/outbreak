@@ -130,7 +130,7 @@ export default class Grid extends Component<Props, State> {
     populationSize: 100000,
 
     // Simulation parameters
-    daysIncubating: 14,
+    daysIncubating: 5,
     daysSymptomatic: 14,
     deathRate: 0.03,
     decreaseInEncountersAfterSymptoms: 0.0,
@@ -954,7 +954,7 @@ export default class Grid extends Component<Props, State> {
     let populationSlider = null;
     if ( true ) {
       populationSlider =
-          this.renderSlider( "Численность населения", this.state.populationSize,
+          this.renderSlider( "Численность населения, чел.", this.state.populationSize,
               (e, value) => {
                 let worldSideSize = Math.round( Math.sqrt( value ) );
                 this.setState({populationSize: worldSideSize * worldSideSize});
