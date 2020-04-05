@@ -1132,12 +1132,17 @@ export default class Grid extends Component<Props, State> {
     }
 
     let grid_legend = (  <div>
+      <ul>
       <ul class="hl">
         <li><NodeLegend type="susceptible"/> &nbsp;<b>Восприимчив</b></li>
-        <li><NodeLegend type="exposed"/> &nbsp;<b>Инфицирован (инкубационный период)</b></li>   
+        <li><NodeLegend type="exposed"/> &nbsp;<b>Инфицирован (инкубационный период)</b></li>
         <li><NodeLegend type="infected"/> &nbsp;<b>Инфицирован (с симптомами)</b></li>
-        <li><NodeLegend type="removed"/> &nbsp;<b>Выздоровел</b></li>     
+      </ul>
+      <ul class="hl">
+        <li><NodeLegend type="removed"/> &nbsp;<b>Выздоровел</b></li>
         <li><NodeLegend type="isolating"/> &nbsp;<b>Самоизоляция</b></li>
+        <li><NodeLegend type="dead"/> &nbsp;<b>Погиб</b></li>
+      </ul>
       </ul>
     </div>);
 
@@ -1180,7 +1185,7 @@ export default class Grid extends Component<Props, State> {
 
           <div style={{'margin': 'auto', 'text-align': 'center', 'margin-top': '20px'}}>
             <Waypoint onEnter={this.onEnter} onLeave={this.onLeave} scrollableAncestor={window}>
-              <canvas ref={this.canvasRef} width={this.gridWidth} height={this.gridWidth} />
+              <canvas style={{'border': '2px double black'}}  ref={this.canvasRef} width={this.gridWidth} height={this.gridWidth} />
             </Waypoint>
             {percentAliveSlider}
             {grid_legend}

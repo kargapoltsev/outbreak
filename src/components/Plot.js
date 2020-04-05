@@ -421,7 +421,7 @@ export default class Plot extends Component<Props, State> {
     let infectedMax = this.props.infectedPerDay.length ? Math.max(...this.props.infectedPerDay) : 1;
     let infectedMaxDay = this.props.infectedPerDay.length ? this.props.infectedPerDay.indexOf( infectedMax ) : 0;
 
-    let infectedMaxCB = <span><NodeLegend type="infectedMax"/> &nbsp;Максимум инфицированных: {infectedMax} ({infectedMaxDay} день)</span>;
+    let infectedMaxCB = <span><NodeLegend type="infected"/> &nbsp;Максимум инфицированных: {infectedMax} ({infectedMaxDay} день)</span>;
     let isolateCB = <span><NodeLegend type="isolating"/> &nbsp;Самоизолированные: {isolatePercent}% ({this.props.isolatePerDay[this.props.isolatePerDay.length - 1]} человек)</span>;
 
     let widthToUse = this.width;

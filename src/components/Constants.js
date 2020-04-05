@@ -1,6 +1,7 @@
 
 export default class Constants {
-  static SUSCEPTIBLE_COLOR = '#EEE';
+  //static SUSCEPTIBLE_COLOR = '#EEE';#FFFFFF
+  static SUSCEPTIBLE_COLOR = '#FFF';
   static EXPOSED_COLOR = '#ffdde2';
   static INFECTED_COLOR = '#F44';
   static ISOLATING_COLOR = '#8094ff';
