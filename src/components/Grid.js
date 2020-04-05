@@ -963,7 +963,7 @@ export default class Grid extends Component<Props, State> {
               (e, value) => {
                 this.onClickUpdateWorld();
               },
-              1000, 1000000, 1, false, false, true);
+              1000, 5000000, 1, false, false, true);
     }
 
 
