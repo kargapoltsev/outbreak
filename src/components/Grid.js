@@ -903,6 +903,7 @@ export default class Grid extends Component<Props, State> {
       transmissionProbabilitySlider =
           this.renderSlider(Translation.TRANSMISSION_RATE, this.state.transmissionProbability,
               (e, value) => { this.setState({transmissionProbability: value}); },
+              null,
               0, this.props.maxTransmissionRate, 0.01, false, this.props.highlight === "transmissionRate", false);
     }
 
