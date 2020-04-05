@@ -656,7 +656,7 @@ ul.hl {
 }
 
 ul.hl li {
-  display: inline-table;
+  display: inline-block;
   margin-right: 5px;
   padding: 3px;
 }

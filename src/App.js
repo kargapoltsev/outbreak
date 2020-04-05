@@ -97,12 +97,10 @@ class App extends Component<Props, State> {
 
   render() {
     return (
-      <div className="main-container">
-        <div className="content">
+      <div >
+        <div >
           {this.renderMainPost()}
         </div>
-        <div className="blank-r"/>
-        <div className="footer"/>
       </div>
     );
   }

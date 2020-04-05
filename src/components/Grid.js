@@ -939,7 +939,7 @@ export default class Grid extends Component<Props, State> {
 
                   let percentage = value / population;
 
-                  console.log( percentage );
+                  //console.log( percentage );
                   // console.log( value );
 
                 this.setState({hospitalCapacitySize: value});
@@ -1049,19 +1049,22 @@ export default class Grid extends Component<Props, State> {
 
     let playbackControls = null;
     if (showAll || this.props.showPlaybackControls) {
-    let newNetworkButton = <WidgetButton onClick={() => {this.setState({playing: false}); this.generate(true); this.forceUpdate();} } >{Translation.BUTTON_RESET}</WidgetButton>;
+    let newNetworkButton = <WidgetButton onClick={() => {this.resetPlotVariables();this.generate(true); this.forceUpdate();this.setState({playing: false}); } } >{Translation.BUTTON_RESET}</WidgetButton>;
       let text = <span style={{fontSize: '10pt'}}>▷</span>;
       if (this.state.playing) {
         text = <span><b>||</b></span>;
       }
+    
       let togglePlaybackButton = <WidgetButton highlighted={!this.state.playing} onClick={() => {this.togglePlayback(); } } >{text}</WidgetButton>;
-    let stepButton = <WidgetButton onClick={() => {this.simulateStep(); this.setState({playing: false}); } } >{Translation.BUTTON_STEP}</WidgetButton>;
-
+      let stepButton = <WidgetButton onClick={() => {this.simulateStep(); this.setState({playing: false}); } } >{Translation.BUTTON_STEP}</WidgetButton>;
+      //not needed can delete
+      let clearButton = <WidgetButton onClick={() => {this.resetPlotVariables();this.setState({playing: false});} } >{Translation.BUTTON_CLEAR}</WidgetButton>;
       playbackControls =
         <div className='playback-controls-container'>
           {newNetworkButton}
           {togglePlaybackButton}
           {stepButton}
+          {/* {clearButton} */}
           {/*{speedMinusButton}*/}
           {/*{speedPlusButton}*/}
         </div>
@@ -1116,7 +1119,7 @@ export default class Grid extends Component<Props, State> {
 
     let plot = null;
     if (this.props.showAliveFraction) {
-      let population = this.state.gridRows * this.state.gridCols;
+      let population = this.state.gridRows * this.state.gridCols;      
       plot = <Plot hospitalCapacity={this.state.hospitalCapacityPct * population}
                    capacityPerDay={this.state.capacityPerDay}
                    deadPerDay={this.state.deadPerDay}
@@ -1128,16 +1131,18 @@ export default class Grid extends Component<Props, State> {
                    isolatePerDay={this.state.isolatePerDay} />;
     }
 
-    let grid_legend = (              <ul class="hl">
-    <li><NodeLegend type="susceptible"/> &nbsp;<b>Восприимчив</b></li>
-    <li><NodeLegend type="exposed"/> &nbsp;<b>Инфицирован (инкубационный период)</b></li>   
-    <li><NodeLegend type="infected"/> &nbsp;<b>Инфицирован (с симптомами)</b></li>
-    <li><NodeLegend type="removed"/> &nbsp;<b>Выздоровел</b></li>     
-    <li><NodeLegend type="isolating"/> &nbsp;<b>Самоизоляция</b></li>
-  </ul>);
+    let grid_legend = (  <div>
+      <ul class="hl">
+        <li><NodeLegend type="susceptible"/> &nbsp;<b>Восприимчив</b></li>
+        <li><NodeLegend type="exposed"/> &nbsp;<b>Инфицирован (инкубационный период)</b></li>   
+        <li><NodeLegend type="infected"/> &nbsp;<b>Инфицирован (с симптомами)</b></li>
+        <li><NodeLegend type="removed"/> &nbsp;<b>Выздоровел</b></li>     
+        <li><NodeLegend type="isolating"/> &nbsp;<b>Самоизоляция</b></li>
+      </ul>
+    </div>);
 
     return (
-        <div className="widget-container" style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+        <div>
           {/*<div style={{display: 'flex', flexDirection: 'row'}}>*/}
           {/*  <Waypoint onEnter={this.onEnter} onLeave={this.onLeave} scrollableAncestor={window}>*/}
           {/*    <canvas ref={this.canvasRef} width={this.gridWidth} height={this.gridWidth} />*/}
@@ -1147,8 +1152,11 @@ export default class Grid extends Component<Props, State> {
           {/*{playbackControls}*/}
 
 
-          <div style={{width: "100&", position: "relative", "min-height": "750px", "z-index":"10"}}>
-            <div style={{width: "540px", position: "absolute", left: "250px"}}>
+          <div style={{'display': 'flex', 'flexDirection': 'cols','margin': 'auto', 'text-align': 'center'}}>
+            <div style={{'margin-left': 'auto'}}>
+              {plot}
+            </div>
+            <div style={{'margin-right': 'auto', 'margin-left': '20px'}}>
               {populationSlider}
               {highlightedSlider}
               {hospitalCapacitySlider}
@@ -1168,22 +1176,14 @@ export default class Grid extends Component<Props, State> {
                 {playbackControls}
               </div>
             </div>
-            <div style={{width: "540px", position: "absolute", left: "-800px"}}>
-              {plot}
-            </div>
-
           </div>
 
-          <div style={{position: "relative", "z-index":"100"}}>
-
+          <div style={{'margin': 'auto', 'text-align': 'center', 'margin-top': '20px'}}>
             <Waypoint onEnter={this.onEnter} onLeave={this.onLeave} scrollableAncestor={window}>
               <canvas ref={this.canvasRef} width={this.gridWidth} height={this.gridWidth} />
             </Waypoint>
             {percentAliveSlider}
             {grid_legend}
-            
-
-
           </div>
 
           {/*{speedSlider}*/}

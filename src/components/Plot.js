@@ -522,16 +522,17 @@ export default class Plot extends Component<Props, State> {
           {/*  </div>*/}
           {/*</div>*/}
 
-          <div style={{'margin-top': '0px'}}>
-            <WidgetButton onClick={() => {this.resetArrays()}}>{Translation.BUTTON_CLEAR}</WidgetButton>
-          </div>
 
+          {/* <div style={{'border': '4px double black'}}> */}
+          <div>
           <PlotLib
               data={data}
               layout={layout}
           />
+          </div>
 
-          <div style={{display: 'flex', flexDirection: 'column'}}>
+
+          <div style={{display: 'flex', flexDirection: 'column', textAlign:'left'}}>
             <div>{infectedCB}</div>
             <div>{recoveredCB}</div>
             <div>{deadCB}</div>
@@ -539,6 +540,10 @@ export default class Plot extends Component<Props, State> {
             <div>{infectedMaxCB}</div>
             <div>{isolateCB}</div>
           </div>
+
+          {/* <div style={{'margin-top': '0px'}}>
+            <WidgetButton onClick={() => {this.resetArrays()}}>{Translation.BUTTON_CLEAR}</WidgetButton>
+          </div> */}
 
 
 
